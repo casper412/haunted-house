@@ -1,0 +1,85 @@
+<html lang="en">
+<head>
+<title>Tamilus Technologies</title>
+
+<style type="text/css" media="all">@import "./css/main.css";</style>
+</head>
+
+<BODY>
+
+<script type="text/javascript">
+function SwitchMenu(obj){
+if(document.getElementById){
+	var el = document.getElementById(obj);
+	if(el.style.display == "none")
+		el.style.display = "block";
+	else 
+		el.style.display = "none"; } }
+</script>
+
+<div class="centered" style="z-index: 5;">
+<div class=width>
+
+<div class="logo"></div>
+
+<div class=content>
+
+	Welcome to Tamilus Technologies<BR>
+	Providing computer solutions for everything from computer maintenaince and networking to
+	programming, and web developement. 
+
+</div>
+
+</div>
+</div>
+
+<div class="centered" style="z-index: 2 ;">
+<div class=width>
+
+<div class="contactus">
+<a name="contactus">
+<span class=contact_text id="sub1" style="display:none;">
+	<B>Mailing Address:</B><BR>
+	11715 Deer Lodge
+	Albuquerque, NM 87123
+	<BR><BR>
+	<B>Email:</B><BR><a href="mailto:info@tamilus.com">info@tamilus.com</a><BR><BR>
+	<B>Phone:</B><BR>(505) 379-6295
+</span>
+</div>
+
+</div>
+</div>
+
+<div class="centered">
+<div class="width">
+
+<div class="menu">
+<p style="text-align: center;">
+<TABLE><TR><TD class="menu_button">
+<a href="./index.htm">Home</a><BR>
+</TD></TR><TR><TD class="menu_button">
+<a href="./services.htm">Services</a><BR>
+</TD></TR><TR><TD class="menu_button">
+<a href="./rates.htm">Rates</a><BR>
+</TD></TR><TR><TD class="menu_button">
+<a href="./aboutus.htm">About Us</a><BR>
+</TD></TR><TR><TD class="menu_button" align=center>
+<a href="#contactus" onClick="SwitchMenu('sub1');">Contact Us</a><BR>
+</TD></TR></TABLE>
+<BR>
+</p>
+</div>
+
+</div>
+</div>
+
+<div class="copyright">
+<div style="width: 800px">
+	Copyright&copy; 2004 Tamilus Technologies, LLC. All rights reserved.
+</div>
+</div>
+
+
+</BODY>
+</HTML>

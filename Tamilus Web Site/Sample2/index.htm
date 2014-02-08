@@ -1,0 +1,79 @@
+<html lang="en">
+<head>
+<title>Tamilus Technologies</title>
+
+<style type="text/css" media="all">@import "info.css";</style>
+</head>
+
+<BODY onLoad="SwitchMenu('sub1');">
+
+<script type="text/javascript">
+function SwitchMenu(obj){
+if(document.getElementById){
+	var el = document.getElementById(obj);
+	if(el.style.display == "none")
+		el.style.display = "block";
+	else 
+		el.style.display = "none"; } }
+</script>
+
+<div class="menu">
+<img src="./Tamilus.gif">
+<p style="text-align: center;">
+<TABLE><TR><TD class="menu_button">
+<a href="#">Home</a><BR>
+</TD></TR><TR><TD class="menu_button">
+<a href="#">Services</a><BR>
+</TD></TR><TR><TD class="menu_button">
+<a href="#">Rates</a><BR>
+</TD></TR><TR><TD class="menu_button" align=center>
+<a href="#" onClick="SwitchMenu('sub1');">Contact Us</a><BR>
+</TD></TR></TABLE>
+<BR><BR>
+</p>
+</div>
+
+
+
+
+
+
+<div class="title">
+<span style="font-size: 26px">About Us</span>
+
+</div>
+
+<div class=content>
+
+	Tamilus Technologies was started in 2004 to provide computer solutions to small businesses
+	in the Albuquerque Metropolitan Area. 
+	<BR><BR>
+	We wanted to provide quality computer service at reasonable rates.
+	Here, we focus on the all aspects of the computer from initial setup and maintenance, to 
+	networking, and to providing quality software to run on your equipement. Besides in office
+	solutions, we also provide a whole variety of web design and programming services. <BR><BR>
+	<BR>
+	Adam Fluckey<BR>
+	Matthew Hall
+	
+</div>
+
+
+<div class="contactus" id="sub1">
+<span class=contact_text>
+<span style="font-weight: bold ; font-size: 20px;">
+Contact Us
+</span>
+<BR><BR>
+<B>Mailing Address:</B><BR>
+11715 Deer Lodge Rd
+Albuquerque, NM 87123
+<BR><BR>
+<B>Email:</B> <a href="mailto:info@tamilus.com">info@tamilus.com</a><BR>
+<B>Phone:</B> (505) 379-6295
+</span>
+</div>
+
+</BODY>
+
+</HTML>

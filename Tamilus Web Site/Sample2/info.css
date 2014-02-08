@@ -1,0 +1,120 @@
+body 
+{
+	color: #333;
+	background-color: #FFFFDF;
+	padding: 0px ;
+	margin:0;
+	font: normal 11px helvetica, arial, geneva, lucida, sans-serif;
+}
+
+.menu
+{
+	position:absolute;
+	z-index: 2 ;
+	top:  25px; 
+	left: 50px; 
+	background: #0000FF ;
+	padding: 5px ;
+	width:   272px;
+	height: 250px;
+	filter:alpha(opacity=75); 
+	-moz-opacity:0.75;
+}
+
+.menu_button
+{
+	background: url(./button.jpg) ;
+	width: 150 ;
+	height: 30 ;
+	background-repeat: no-repeat; 
+	text-align: center ;
+	vertical-align: center ;
+}
+
+.title
+{
+	position:	absolute	;
+	padding: 	15px		;
+	z-index: 	7 		;
+	top:  	125px 	; 
+	left: 	280px		; 
+	width:	200px		;
+	background: #FFFFFF	;	
+
+	filter:alpha(opacity=90); 
+	-moz-opacity:0.90		;
+
+	font-weight: 	normal ;
+	font-size:   	18px   ;
+	font-family: 	Comic Sans MS, Arial, Times New Roman;
+	color: 		#000040 ;
+	text-align:		center ;
+}
+
+.content
+{
+	position:	absolute	;
+	padding: 	25px		;
+	z-index: 	1 		;
+	top:  	175px 	; 
+	left: 	300px		; 
+	background: #000040 	;
+	width:	500px		;	
+	height: 	400px		;
+
+	font-weight: 	normal ;
+	font-size:   	18px   ;
+	font-family: 	Comic Sans MS, Arial, Times New Roman;
+	color: 		#FFFFFF;
+	text-align:		center ;
+}
+
+a
+{
+	font-weight: bold ;
+	font-size:   18px ;
+	font-family: geneva, times ;
+	text-decoration: none ; 
+	color: #000000 ;
+}
+
+a:hover
+{
+	font-weight: bold ;
+	font-size:   20px ;
+	font-family: geneva, times ;
+	text-decoration: none ; 
+	color: #000000 ;
+}
+
+.contactus
+{
+	position:	absolute	;
+	padding:	15px		;
+	z-index: 	1 		;
+	top:  	75px 		; 
+	left: 	700px		; 
+	background: #0000FF 	;
+	width:	250px		;
+	height:	200px		;
+	text-align: center 	;
+	filter:alpha(opacity=75); 
+	-moz-opacity:0.75		;
+	display:none 		;
+}
+
+#sub1 a
+{
+	font-weight: normal;
+	font-size:   18px  ;
+	font-family: ARIAL ;
+	color: #FFFF00;
+	text-decoration: underline ;
+}
+.contact_text
+{
+	font-weight: 	normal ;
+	font-size:   	18px   ;
+	font-family: 	ARIAL  ;
+	color: 		#FFFF00;
+}

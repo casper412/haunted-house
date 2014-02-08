@@ -1,0 +1,49 @@
+/* button styles */
+a.button, a.buttonDis {
+display: block;
+background-color: transparent;
+background-image: url(buttonBackground.gif);
+background-repeat: no-repeat;
+width: 132px;
+height: 28px;
+margin: 5px auto;
+padding: 5px 0 0 0;
+text-align: center;
+font-family: Arial, Helvetica, sans-serif;
+font-size: 100%;
+font-weight: bold;
+text-decoration: none;
+}
+a.button:link, a.button:visited {
+color: #002577;
+}
+a.button:hover, a.button:active {
+background-position: 0 -36px;
+color: #FF7200;
+}
+a.buttonDis:link, a.buttonDis:visited, a.buttonDis:hover, a.buttonDis:active {
+background-position: 0 -72px;
+color: #5F5F5F;
+cursor: default;
+}
+.icon {
+display: inline-block;
+background-repeat: no-repeat;
+padding: 0 0 5px 18px;
+}
+a.button:hover .icon, a.button:active .icon {
+background-position: 0 -28px;
+}
+a.buttonDis:link .icon, a.buttonDis:visited .icon, a.buttonDis:hover .icon, a.buttonDis:active .icon {
+background-position: 0 -56px;
+}
+/* list of button icons */
+#buttonOK .icon {
+background-image: url(ok.gif);
+}
+#buttonCancel .icon {
+background-image: url(cancel.gif);
+}
+#buttonImport .icon {
+background-image: url(import.gif);
+}

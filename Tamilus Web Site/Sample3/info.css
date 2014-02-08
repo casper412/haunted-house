@@ -1,0 +1,74 @@
+body 
+{
+	color: #333;
+	background-color: #FFFFDF;
+	padding: 0px ;
+	margin:0;
+	font: normal 11px helvetica, arial, geneva, lucida, sans-serif;
+}
+
+.menu
+{
+	position:absolute;
+	z-index: 2 ;
+	top:  148px; 
+	left: 71px; 
+}
+
+.logo
+{
+	position:absolute;
+	z-index: 5 ;
+	top:  25px; 
+	left: 50px; 
+}
+
+.shadow
+{
+	position:absolute;
+	z-index: 4 ;
+	top:  50px; 
+	left: 75px; 
+	background: #000000 ;
+	padding: 20 20 20 20px ;
+	width:	265px;
+	height: 99px;
+	filter:alpha(opacity=85); 
+	-moz-opacity:0.85;
+}
+
+.content
+{
+	position:absolute;
+	z-index: 3  ;
+	top:  130px ; 
+	left: 280px; 
+}
+
+a
+{
+	font-weight: bold ;
+	font-size:   20px ;
+	font-family: geneva, times ;
+	text-decoration: none ; 
+	color: #000000 ;
+}
+
+a:hover
+{
+	font-weight: bold ;
+	font-size:   24px ;
+	font-family: geneva, times ;
+	text-decoration: none ; 
+	color: #000000 ;
+}
+
+.default
+{
+	font-weight: normal;
+	font-size:   18px  ;
+	font-family: ARIAL ;
+	color: #FFFF00;
+}
+
+

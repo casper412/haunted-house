@@ -1,0 +1,232 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+<title>Test CSS Buttons</title>
+
+<style type="text/css">
+<!--
+
+body {
+	background-color: #FFFFFF;
+	margin: 5px 7px 5px 7px;
+	color:#000;
+	font:x-small/1.5em Tahoma, Arial, Helvetica, Sans-Serif;
+	voice-family: "\"}\""; voice-family:inherit;
+	font-size:small;
+}
+
+html>body {font-size:small;}
+
+
+a { color: #0461BA;  text-decoration: none;}
+a:link { color:#0461BA;}
+a:hover { color: #FFFFFF;}
+
+
+.nwTab {
+      float:left;
+      width:100%;
+      background:#C7D5D9 url("images/nw_tab_bg.gif") repeat center;
+      font-family: Times;
+      font-size:80%;
+      line-height:normal;
+      white-space: nowrap;
+	border-bottom:1px solid #765;
+}
+.nwTab ul {
+      margin:0;
+      padding:0px 0px 0px;
+      list-style:none;
+      height: 1px;
+}
+.nwTab li {
+      display:inline;
+      margin:0;
+      padding:0;
+}
+.nwTab a {
+      float:left;
+      margin:0;
+      padding:0 0 0 10px;
+      text-decoration:none;
+}
+.nwTab a span {
+      float:left;
+      display:block;
+      padding:5px 15px 4px 6px;
+      font-weight:normal;
+      color:#444444;
+}
+/* Commented Backslash Hack hides rule from IE5-Mac \*/
+.nwTab a span {float:none;}
+/* End IE5-Mac hack */
+.nwTab a:hover span {
+      color:#222222;
+}
+.nwTab .nwTabCurrent a {
+}
+.nwTab .nwTabCurrent a span {
+      color:#000000;
+}
+.nwTab a:hover {
+}
+    .nwTab a:hover span {
+}
+
+-->
+</style>
+
+
+<script type="text/javascript">
+
+function go(action)
+{
+  document.forms[0].action.value=action;
+}
+
+function show(section)
+{
+  if (section==0)   { 
+    document.getElementById('section1').style.display='';
+    document.getElementById('section2').style.display='';
+    document.getElementById('section3').style.display='';
+    document.getElementById('section4').style.display='';
+    document.getElementById('section5').style.display='';
+  } 
+  else
+  {
+    document.getElementById('section1').style.display='none';
+    document.getElementById('section2').style.display='none';
+    document.getElementById('section3').style.display='none';
+    document.getElementById('section4').style.display='none';
+    document.getElementById('section5').style.display='none';
+
+    if      (section==1) {document.getElementById('section1').style.display='';}
+    else if (section==2) {document.getElementById('section2').style.display='';}
+    else if (section==3) {document.getElementById('section3').style.display='';}
+    else if (section==4) {document.getElementById('section4').style.display='';}
+    else if (section==5) {document.getElementById('section5').style.display='';}
+  }
+
+  document.getElementById('tab1').className='';
+  document.getElementById('tab2').className='';
+  document.getElementById('tab3').className='';
+  document.getElementById('tab4').className='';
+  document.getElementById('tab5').className='';
+
+  if     (section==0){document.getElementById('tab0').className='nwTabCurrent';}
+  else if(section==1){document.getElementById('tab1').className='nwTabCurrent';}
+  else if(section==2){document.getElementById('tab2').className='nwTabCurrent';}
+  else if(section==3){document.getElementById('tab3').className='nwTabCurrent';}
+  else if(section==4){document.getElementById('tab4').className='nwTabCurrent';}
+  else if(section==5){document.getElementById('tab5').className='nwTabCurrent';}
+}
+
+</script>
+
+</head>
+
+<body>
+
+<div align="center">
+
+
+<table width="75%" border="1" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td>
+<div class="nwTab">
+  <ul>
+    <li id="tab1" class="nwTabCurrent"><a href="javascript:show(1);"><span>RESTAURANT</span></a></li>
+    <li id="tab2"><a href="javascript:show(2);"><span>STEAK</span></a></li>
+    <li id="tab3"><a href="javascript:show(3);"><span>WINE</span></a></li>
+    <li id="tab4"><a href="javascript:show(4);"><span>WHATEVER</span></a></li>
+    <li id="tab5"><a href="javascript:show(5);"><span>CONTACT US</span></a></li>
+  </ul>
+</div>
+  </td>
+</tr>
+</tbody>
+</table>
+
+<div align="center">
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tbody>
+
+<!-- 1 1 1 1 1 ------------------------------------------------------------- -->
+
+<tr>
+  <td align="left">
+
+  <div id="section1" style="{display:;}">
+   1
+    </div>
+  </td>
+</tr>
+
+<!-- 2 2 2 2 2 ------------------------------------------------------------- -->
+
+<tr>
+  <td align="left">
+
+  <div id="section2" style="{display:none;}">
+   2
+    </div>
+  </td>
+</tr>
+
+<!-- 3 3 3 3 3 ------------------------------------------------------------- -->
+
+<tr>
+  <td align="left">
+
+  <div id="section3" style="{display:none;}">
+   3
+    </div>
+  </td>
+</tr>
+
+<!-- 4 4 4 4 4 ------------------------------------------------------------- -->
+
+<tr>
+  <td align="left">
+
+  <div id="section4" style="{display:none;}">
+   4
+    </div>
+  </td>
+</tr>
+
+<!-- 5 5 5 5 5 ------------------------------------------------------------- -->
+
+<tr>
+  <td align="left">
+
+  <div id="section5" style="{display:none;}">
+    5
+    </div>
+  </td>
+</tr>
+
+</tbody>
+</table>
+</div>
+
+
+</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+
+</body>
+</html>

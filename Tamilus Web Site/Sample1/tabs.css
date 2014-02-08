@@ -1,0 +1,76 @@
+body {
+	color: #333;
+	background-color: #fff;
+	padding: 0px ;
+	margin:0;
+	font: normal 11px helvetica, arial, geneva, lucida, sans-serif;
+}
+
+.mainbody
+{
+	position:relative;
+	top: -84px;
+	color:#000000;
+	margin:  0 ;
+	padding: 0 ; 
+	z-index:101;
+	background: #FFFFDF;
+	border-top:1px solid #777;
+}
+
+h1 {
+	font-size:2em;
+	font-weight:normal;
+	margin:1em 0;
+}
+
+ul#topnav {
+	margin:0 0 100px;
+	padding: 0 0 0 50px;
+	list-style: none;
+	border-bottom: 1px solid #777;
+} 
+
+#topnav li {
+	display: block;
+	margin: 0;
+	padding: 0;
+	float:left;
+	border: none;
+}
+	
+#topnav a {
+	display:block;
+	color:#FFFFFF;
+	text-decoration:none;
+	background: url(./images/lia.gif) no-repeat;
+	margin:0;
+	padding: 0.2em 2.4em 0.2em 36px;
+	border-right: 1px solid #aaa;
+	position: relative;
+	font: bold 11px helvetica, arial, geneva, lucida, sans-serif;
+}
+#topnav a#a0 { left:   0px;}
+#topnav a#a1 { left: -30px;}
+#topnav a#a2 { left: -60px;}
+#topnav a#a3 { left: -90px;}
+#topnav a#a4 { left: -120px;}
+#topnav a#a5 { left: -150px;}
+#topnav a#a6 { left: -180px;}
+	
+#topnav a:hover {
+	color:#000000;
+	background: url(./images/liahover.gif) no-repeat;
+}
+
+#topnav a.here {
+	position:relative;
+	color:#000000;
+	z-index:102;
+	background: url(./images/liahover.gif) no-repeat;
+	border-right: 1px solid #777;
+	padding: 0.2em 1em 0.2em 35px;
+	margin: 0 4px 0 0;
+}
+
+	
