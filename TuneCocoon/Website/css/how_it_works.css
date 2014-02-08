@@ -1,0 +1,38 @@
+table.how_it_works
+{
+	width: 400px ;
+}
+
+
+tr.how_it_works
+{
+}
+
+td.how_it_works
+{
+	width: 100px ;
+	text-align: right ;
+	vertical-align: top ;
+}
+
+td.how_it_works_text
+{
+	width: 300px ;
+	padding-left: 15px ; 
+	vertical-align: middle ;
+}
+
+
+td.how_it_works_header
+{
+	width: 25px ;
+	font-size: 24px;
+	font-weight: bold ;
+	color: #FF3333 ;
+}
+
+font.how_it_works_main
+{
+	font-size: 18px ;
+	color: #000000 ;
+}

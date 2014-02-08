@@ -1,0 +1,28 @@
+
+font.main_text
+{
+	font-weight: bold ;
+	font-size:   22px ; 
+}
+
+table.list
+{
+	width: 100% ;
+}
+
+tr.list
+{
+}
+
+td.list
+{
+	font-size: 16px ;
+	text-align: center ;
+	padding-right: 15px ;
+}
+
+font.list_header
+{
+	font-weight: bold ;
+	font-size:   20px ;
+}

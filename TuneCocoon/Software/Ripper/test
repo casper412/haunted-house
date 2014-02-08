@@ -1,0 +1,10 @@
+
+while [[ `cat the_file | awk '{ print $1 }'` != "CD_Stopped" ]]
+do
+
+   # wait a while
+   sleep 10 ;
+
+   echo `date`;
+done
+

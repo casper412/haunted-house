@@ -1,0 +1,112 @@
+body
+{
+	color:#000000; 
+	background:#FFFFFF; 
+	padding:0px; 
+	margin:0px 0px 0px 0px; 
+	font: normal 12pt Arial, Times New Roman ;
+}
+
+font.standard
+{
+	font-family: Arial, Times New Roman ;
+}
+
+a
+{ 
+	text-decoration: none; 
+	color: #FF33FF; 
+}
+
+a:visited
+{ 
+	text-decoration:none; 
+	color:#FF33FF;
+}
+
+a:hover
+{ 
+	text-decoration: none ;
+	color:#FF3333 ; 
+}
+
+table.layout
+{
+	width:  800px ;
+	height: 100%  ;
+	border: 0     ;
+	padding: 0px;
+	margin: 0px;
+}
+
+tr.main
+{
+	width:  100% ;
+	height: 100% ;
+}
+
+td.main_side
+{
+	width: 175px ;
+	vertical-align: top ;
+	text-align: center ;
+}
+
+td.main
+{
+	vertical-align: top ;
+}
+
+font.side_heading
+{
+	font-family: arial black ;
+	color: #3333FF;
+	font-weight: bold ;
+	font-size: 20pt ;
+}
+
+font.side_sub_heading
+{
+	font-family: arial black ;
+	color: #FF3333;
+	font-weight: bold ;
+	font-size: 18pt ;
+}
+
+table.contact
+{
+	border: solid black 1px ;
+	width:	350px ;
+}
+
+tr.contact
+{
+}
+
+td.contact
+{
+	vertical-align: top 	;
+	font-size:	20px ;
+	font-weight:	bold ;
+}
+
+td.contact_phone
+{
+	vertical-align: top 	;
+	font-size:	20px ;
+}
+
+td.contact_city
+{
+	vertical-align: top 	;
+	text-align:	center ;
+	font-size:	20px ;
+}
+
+td.footer
+{
+	text-align: left		; 
+	color: 	#666666	;
+	font-size:  8pt 		;
+	font-style: italic	; 
+}

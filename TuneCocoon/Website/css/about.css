@@ -1,0 +1,19 @@
+table.testimonial
+{
+	border: solid black 1px ;
+	background-color: #ff33ff;
+}
+
+tr.testimonial
+{
+}
+
+td.testimonial
+{
+	vertical-align: top 	;
+}
+
+font.main_text
+{
+	font-weight: bold ;
+}

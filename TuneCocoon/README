@@ -1,0 +1,2 @@
+TuneCocoon was a business that I was part owner of that did CD ripping. The software ran on FreeBSD. The slaves would rip CDs to WAV files. 
+The files were copied to a central server which, monitoring a folder, would convert the WAVs to MP3s.

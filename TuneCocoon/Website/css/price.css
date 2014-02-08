@@ -1,0 +1,47 @@
+
+table.price
+{
+	width: 800px ;
+	height: 100% ;
+	border: 1 ;
+}
+
+tr
+{
+	vertical-align: top ;
+}
+
+td.header
+{
+	font-weight: bold   ; 
+	font-style:  italic ;
+	font-size:   20px ;
+}
+
+td.label
+{
+	font-weight: 	bold ;
+	width: 		25% ;
+	font-size:	14px ;
+	white-space: nowrap ;
+}
+
+td.input
+{
+	font-size:	14px ;
+	white-space: nowrap ;
+	text-align: center ;	
+}
+
+td.price
+{
+	font-style: italic ; 
+	font-size:  14px ;
+	white-space: nowrap ;
+	text-align: center ;
+}
+
+td.description
+{
+	font-size:	14px ;	
+}

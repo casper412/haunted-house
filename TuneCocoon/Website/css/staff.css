@@ -1,0 +1,75 @@
+tr.header
+{
+	background-image: url("../images/logo_small.jpg") ;
+	background-repeat: no-repeat ;
+	height: 120px ;
+}
+
+td.staff_main
+{
+	vertical-align: top;
+	text-align: left ;
+}
+
+div.link_home
+{
+	top: 2px;
+	left: 248px ;
+	position: relative;
+	display:  inline ;
+	width: 110px ; 
+}
+
+div.link_about
+{
+	top: 46px;
+	left: 180px ;
+	position: relative;
+	display:  inline ;
+	width: 110px ; 
+}
+
+div.link_contact
+{
+	top: 24px;
+	left: 180px ;
+	position: relative;
+	display:  inline ;
+	width: 150px ; 
+}
+
+div.link_digital
+{
+	top: 2px;
+	left: 150px ;
+	position: relative;
+	display:  inline ;
+	width: 150px ; 
+}
+
+div.link_prices
+{
+	top: 26px;
+	left: 408px ;
+	position: relative;
+	display:  inline ;
+	width: 110px ; 
+}
+
+div.link_shipping
+{
+	top: 4px;
+	left: 415px ;
+	position: relative;
+	display:  inline ;
+	width: 110px ; 
+}
+
+div.link_faq
+{
+	top: -59px;
+	left: 685px ;
+	position: relative;
+	display:  inline ;
+	width: 110px ; 
+}

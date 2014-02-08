@@ -1,0 +1,26 @@
+
+tr.answer
+{	
+
+}
+
+td.answer
+{
+	vertical-align: top 	;
+	font-weight: bold ;
+	font-size: 20px ; 
+	font-style: italic;
+	text-align: left ;
+}
+
+tr.question
+{
+}
+
+td.question
+{
+	vertical-align: top 	;
+	font-weight: normal ;
+	font-size: 16px ; 
+	text-align: left ;
+}

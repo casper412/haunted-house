@@ -1,0 +1,31 @@
+#!/bin/bash
+
+export dev=$1 ;
+export output=$2 ;
+export cda="cda -batch -dev $dev" ;
+
+echo "Turning CDA ON" ;
+$cda on ;
+
+#Get Disk ID
+dir=`$cda extinfo | grep "Xmcd disc ID" | awk '{print $4}'` ;
+
+mkdir -p $output/$dir ; 
+
+# Track Information
+echo "Output TOC" ;
+$cda toc >> "$output/$dir/toc.txt";
+echo "Output Extra Information" ;
+$cda extinfo >> "$output/$dir/extinfo.txt";
+echo "Turning CDA OFF" ;
+$cda off ;
+
+#Start Ripping
+echo "Starting CDParanoia" ;
+
+cdparanoia -ZYXBqw -d $dev 1- $output/$dir ;
+
+touch "$output/$dir/done.txt" ;
+
+
+

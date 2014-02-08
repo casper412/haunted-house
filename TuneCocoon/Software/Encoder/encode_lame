@@ -1,0 +1,26 @@
+#!/bin/bash
+
+title=$1	;
+artist=$2	;
+album=$3	;
+year=$4		;
+comment="Tune_Coccoon_LLC.";
+track=$5	;
+genre=$6	;
+
+infile=$7	;
+outpath=$8	;
+outfile=$9	;
+
+mkdir="mkdir -p $outpath" ;
+
+echo $mkdir ;
+  
+$mkdir 
+
+lame="/usr/local/bin/lame -b192 -o --tt $title --ta $artist --tl $album --ty $year --tc $comment --tn $track --add-id3v2 $infile $outpath/$outfile" ;
+
+echo $lame ;
+
+#execute lame
+$lame ;

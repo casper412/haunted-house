@@ -1,0 +1,84 @@
+
+font.main
+{
+	color: #000000;
+	font-weight: bold ;
+	font-size: 18pt ;
+
+}
+
+
+font.highlight
+{
+	color: #3333FF;
+	font-weight: bold ;
+	font-size: 20pt ;
+
+}
+
+table.ad
+{
+	border: solid black 0px ;
+	background-color: #3333FF;
+	text-align: center ; 
+}
+
+tr.ad
+{
+	vertical-align: top 	;
+}
+
+td.ad
+{
+	font-size: 20px ;
+	font-weight: bold ;
+	color: #FFFFFF ; 
+	padding-top: 15px ;
+	padding-bottom: 15px ;
+}
+
+font.small_ad
+{
+	font-size: 16px ; 
+}
+
+table.basic
+{
+	margin-left: 25px ;
+	width: 90% ;
+	font-size:	 20px ;
+}
+
+table.additional
+{
+	margin-left: 25px ;
+	width: 90% ; 
+	font-size:	 20px ;
+}
+
+td.header
+{
+	font-weight: bold ;	
+}
+
+td.text
+{
+	padding-top: 	10px ;
+	padding-bottom: 	10px ;
+	vertical-align: 	top ;
+}
+
+td.price
+{
+	padding-top: 	10px ;
+	padding-bottom: 	10px ;
+	vertical-align: 	top ;
+	text-align: right ;
+}
+
+td.hd
+{
+	padding-top: 	5px ;
+	padding-bottom: 	5px ;
+	vertical-align: 	top ;
+}
