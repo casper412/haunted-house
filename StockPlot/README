@@ -1,0 +1,3 @@
+Download CSV from Yahoo finance http://real-chart.finance.yahoo.com/table.csv?s=AMZN&d=3&e=3&f=2016&g=d&a=4&b=16&c=1997&ignore=.csv
+
+Save file as table.csv and output is out.csv and out.png
