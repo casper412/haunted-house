@@ -31,14 +31,18 @@ function RollDie(G, ctx) {
 
   // Pick a question at random
   G.question = ctx.random.Die(G.questions.length) - 1;
+  G.question_answered = false;
+  G.question_answered_correctly = null;
   ctx.events.setStage('question_stage');
 }
 
 function SelectAnswer(G, ctx, id) {
+  G.question_answered = true;
   let question_definition = G.questions[G.question];
-  if (id == question_definition.correct_answer) {
-
+  if (id === question_definition.correct_answer) {
+    G.question_answered_correctly = true;
   } else {
+    G.question_answered_correctly = false;
     move(G, ctx, -3);
   }
   ctx.events.setActivePlayers({ all: 'move_stage'});
@@ -75,7 +79,9 @@ export const CubScoutAdventure = {
           { question_text: 'What color is the sun?',
             possible_answers: ['green','white','blue','orange'], correct_answer: 3},
         ],
-        question: 0
+        question: 0,
+        question_answered: true,
+        question_answered_correctly: null
     };
   },
 
