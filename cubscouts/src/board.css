@@ -1,0 +1,154 @@
+
+#board {
+  border-collapse: collapse;
+  font-family: monospace;
+}
+
+#winner {
+  position: relative;
+  top: -80px;
+  left: 50px;
+  margin-top: 25px;
+  width: 168px;
+  text-align: center;
+}
+
+/* Controls what every square looks like */
+div.square {
+  text-align: center;
+  font-weight: bold;
+  font-size: 12px;
+  color: #000000;
+  width: 47px;
+  height: 47px;
+  border: 3px solid #222;
+  background: #fff;
+  border-radius: 20%;
+}
+
+/* Controls what the start square looks like */
+div.start {
+  background: #fff;
+}
+
+/* Controls what the field squares looks like */
+div.field {
+  background: rgb(33, 106, 5);
+}
+
+/* Controls what the marsh squares looks like */
+div.marsh {
+  background: rgb(13, 155, 146);
+}
+
+/* Controls what the forest squares looks like */
+div.forest {
+  background: rgb(37, 69, 18);
+}
+
+/* Controls what the rocks squares looks like */
+div.rocks {
+  background: rgb(152, 149, 140);
+}
+
+/* Controls what the sand squares looks like */
+div.sand {
+  background: rgb(165, 122, 12);
+}
+
+/* Controls what the finish squares looks like */
+div.finish {
+  background: #f00;
+}
+
+/* Controls what the pieces looks like */
+div.piece {
+  width: 23px;
+  height: 23px;
+}
+
+/* Controls what the first player looks like */
+div.piece0 {
+  background-image: url('red.png');
+}
+
+/* Controls what the second player looks like */
+div.piece1 {
+  background-image: url('yellow.png');
+}
+
+div.piece0:before {
+  
+}
+
+div.piece1:before {
+  
+}
+
+div.square:hover {
+  filter: invert(100%);
+}
+
+/* Render dice rolls */
+div#roll6 {
+  background-position: -112px -82px;
+}
+
+div#roll5 {
+  background-position: -55px -82px;
+}
+
+div#roll4 {
+  background-position: 2px -82px;
+}
+
+div#roll3 {
+  background-position: -112px -22px;
+}
+
+div#roll2 {
+  background-position: -55px -22px;
+}
+
+div#roll1 {
+  background-position: 2px -22px;
+}
+
+div.roll {
+  background-image: url('dice.jpg');
+  background-repeat: no-repeat;
+  background-position: -1000px -1000px;
+  height: 60px;
+  width: 60px;
+  border: 1px solid black;
+  border-radius: 10%;
+}
+
+/* Render question */
+div.question {
+  position: absolute;
+  padding-top: 30px;
+  padding-left: 30px;
+  font-size: 20px;
+  top: 150px;
+  left: 500px;
+  height: 300px;
+  width: 500px;
+  border: 4px solid black;
+  background: rgb(110, 109, 167);
+  border-radius: 20%;
+}
+
+/* Render Answer */
+div.answer {
+  border: 4px solid black;
+  border-radius: 10%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-right: 5px;
+  padding-left: 20px;
+  height: 40px;
+}
+div.answer:hover {
+  background: rgb(86, 85, 143);
+}
