@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './board.css';
-import './squares.css';
 
 export class CubScoutAdventureBoard extends React.Component {
   static propTypes = {
@@ -17,24 +16,30 @@ export class CubScoutAdventureBoard extends React.Component {
     super(props);
     this.questionRef = React.createRef();
     this.answerQuestionRef = React.createRef();
+
+    this.playerRefs = [React.createRef(), React.createRef()];
   }
 
   onClickBoard = () => {
     this.props.moves.RollDie();
-    // Show the question
-    this.questionRef.current.classList.remove("answered");
-    this.questionRef.current.classList.add("not-answered");
-    this.answerQuestionRef.current.classList.add("hide");
+  }
+
+  onClickCard = id => {
+    this.props.moves.GetCard(this.questionRef, this.answerQuestionRef);
   }
 
   onClickAnswer = id => {
-    this.props.moves.SelectAnswer(id);
-    // Hide the question
-    if (this.questionRef.current) {
-      this.questionRef.current.classList.add("answered");
-      this.questionRef.current.classList.remove("not-answered");
-    }
-    this.answerQuestionRef.current.classList.remove("hide");
+    this.props.moves.SelectAnswer(id,this.questionRef, this.answerQuestionRef);
+  }
+
+  renderInstructions() {
+    let instructions = <div id="instructions">
+      <span class='title'>Instructions:</span>
+      <span>Each player takes turns, click the roll button to move.</span>
+      <span>Your piece will move, then click the card deck to get a card.</span>
+      <span>Answer the question, but watch out, a wrong answer will move you back 3.</span>
+    </div>;
+    return instructions
   }
 
   renderSquares() {
@@ -42,25 +47,36 @@ export class CubScoutAdventureBoard extends React.Component {
     for (let i = 0; i < this.props.G.cells.length; i++) {
       const id = i;
       let classes = this.props.G.cells[i].className + ' square';
-      let occupied = [];
-      for (let j = 0; j < this.props.G.cells[id].occupied.length; j++) {
-        occupied.push(
-          <div 
-            key={'piece' + this.props.G.cells[id].occupied[j]}
-            className={'piece piece' + this.props.G.cells[id].occupied[j]}></div>
-        );
-      }
+      let style   = {'top': this.props.G.cells[i].top + 'px', 'left': this.props.G.cells[i].left + 'px'};
       squares.push(
         <div
           key={id}
           id={'square' + id}
           className={classes}
+          style={style}
         >
-          {occupied}
         </div>
       );
     }
     return squares;
+  }
+
+  renderPieces() {
+    let pieces = [];
+    for (let i = 0; i < this.props.G.pieces.length; i++) {
+      let piece = this.props.G.pieces[i];
+      let square = piece.square;
+      let style = {'top': this.props.G.cells[square].top + 'px', 'left': this.props.G.cells[square].left + 'px'};
+      pieces.push(
+        <div 
+          key={'piece' + i}
+          className={'piece piece' + i}
+          style={style}
+          ref={this.playerRefs[i]}
+        ></div>
+      );
+    }
+    return pieces;
   }
 
   renderWinner() {
@@ -86,6 +102,18 @@ export class CubScoutAdventureBoard extends React.Component {
       > 
       </div>
     return last_roll;
+  }
+
+  renderGetCard() {
+    let card_deck = 
+      <div 
+        className="card_deck"
+        id={"card_deck"}
+        onClick={() => this.onClickCard()}
+        hint="Click to get a question card!"
+      > 
+      </div>
+    return card_deck;
   }
 
   renderQuestion() {
@@ -143,23 +171,35 @@ export class CubScoutAdventureBoard extends React.Component {
   }
 
   render() {
+    let instructions = this.renderInstructions();
     let squares = this.renderSquares();
+    let pieces = this.renderPieces();
     let winner = this.renderWinner();
     let last_roll = this.renderLastRoll();
-    let question = this.renderQuestion();
-    let answer_to_question = this.renderAnswerQuestion();
+    let card_deck = this.renderGetCard();
+    let question_parts = [];
+    if (!this.props.ctx.gameover) {
+      question_parts.push(this.renderQuestion());
+      question_parts.push(this.renderAnswerQuestion());
+    }
     let who_turn = this.renderWhoTurn();
 
     return (
       <div>
-        {squares}
-        <br/>
-        <br/>
-        {last_roll}
-        {winner}
-        {question}
-        {answer_to_question}
-        {who_turn}
+        <div>
+          {instructions}
+        </div>
+        <div>
+          {squares}
+          {pieces}
+          <br/>
+          <br/>
+          {last_roll}
+          {card_deck}
+          {winner}
+          {question_parts}
+          {who_turn}
+        </div>
       </div>
     );
   }

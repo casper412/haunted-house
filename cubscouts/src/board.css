@@ -5,8 +5,8 @@
 }
 
 #winner {
-  position: relative;
-  top: -80px;
+  position: absolute;
+  top: 550px;
   left: 50px;
   margin-top: 25px;
   width: 168px;
@@ -19,11 +19,12 @@ div.square {
   font-weight: bold;
   font-size: 12px;
   color: #000000;
-  width: 47px;
-  height: 47px;
-  border: 3px solid #222;
+  width: 46px;
+  height: 46px;
+  border: 2px solid #222;
   background: #fff;
   border-radius: 20%;
+  position: absolute;
 }
 
 /* Controls what the start square looks like */
@@ -66,6 +67,27 @@ div.sand {
   background-size: contain;
 }
 
+div.go_back {
+  color: #C62828;
+  padding: 10px 0px 10px 0px;
+  width: 46px;
+  height: 26px;
+  font-size: 10px;
+}
+
+div.go_back:before {
+  content: "Go Back 3 Spaces";
+}
+
+/* Controls what the bridge squares looks like */
+div.bridge {
+  background: rgb(255, 255, 255);
+  background-image: url('images/bridge.png');
+  background-position: 0px 5px;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
 /* Controls what the finish squares looks like */
 div.finish {
   background: #f00;
@@ -77,6 +99,10 @@ div.finish {
 div.piece {
   width: 23px;
   height: 23px;
+  margin-top: 2px;
+  margin-left: 10px;
+  position: absolute;
+  transition: top 0.5s, left 0.5s;
 }
 
 /* Controls what the first player looks like */
@@ -87,14 +113,7 @@ div.piece0 {
 /* Controls what the second player looks like */
 div.piece1 {
   background-image: url('images/yellow.png');
-}
-
-div.piece0:before {
-  
-}
-
-div.piece1:before {
-  
+  margin-top: 25px;
 }
 
 /* Render dice rolls */
@@ -125,9 +144,9 @@ div#roll1 {
 div.roll {
   position: absolute;
   top: 10px;
-  left: 720px;
+  left: 740px;
   background-color: #eee;
-  background-image: url('images/dice.jpg');
+  background-image: url('images/dice.png');
   background-repeat: no-repeat;
   background-position: -1000px -1000px;
   height: 60px;
@@ -136,8 +155,38 @@ div.roll {
   border-radius: 10%;
 }
 
+div#roll0:before {
+  content: "Roll!";
+  height: 40px;
+  width: 40px;
+  padding: 10px;
+  font-weight: bold;
+  text-align: center;
+  vertical-align: middle;
+}
+
 div.roll:hover {
-  filter: invert(100%);
+  filter: drop-shadow(3px 3px 3px blue);
+  background-color: #fcc;
+}
+
+div.card_deck {
+  position: absolute;
+  top: 10px;
+  left: 810px;
+  background-color: #eee;
+  background-image: url('images/card_deck.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 130px;
+  width: 90px;
+  border: 1px solid black;
+  border-radius: 10%;
+}
+
+div.card_deck:hover {
+  filter: drop-shadow(3px 3px 3px blue);
+  background-color: #fcc;
 }
 
 /* Render question */
@@ -147,9 +196,9 @@ div.question {
   padding-left: 30px;
   font-size: 20px;
   top: 150px;
-  left: 500px;
+  left: 610px;
   height: 0px;
-  width: 500px;
+  width: 470px;
   border: 4px solid black;
   background: rgb(110, 109, 167);
   border-radius: 20%;
@@ -159,7 +208,7 @@ div.question {
 }
 
 div.not-answered {
-  opacity: 1.0;
+  opacity: 0.9;
   height: 300px;
 }
 
@@ -178,6 +227,7 @@ div.answer {
   padding-right: 5px;
   padding-left: 20px;
   height: 40px;
+  width: 400px;
 }
 
 div.answer:hover {
@@ -223,8 +273,8 @@ div#answer_to_question.hide {
 
 /* Render whose turn is it */
 div#who {
-  height: 60px;
-  width: 60px;
+  height: 80px;
+  width: 80px;
   border: 1px solid black;
   border-radius: 10%;
   position: absolute;
@@ -241,4 +291,18 @@ div#who.player1 {
 
 div#who.player2 {
   background: yellow;
+}
+
+div#instructions {
+  position: absolute;
+  top: 500px;
+  left: 400px;
+  width: 400px;
+  border: 1px solid #555;
+  padding: 10px;
+}
+
+div#instructions span.title {
+  font-weight: bold;
+  font-style: italic;
 }
