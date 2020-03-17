@@ -34,7 +34,7 @@ function RollDie(G, ctx, messageRef) {
   G.question_answered_correctly = null;
 
   let square = G.pieces[ctx.currentPlayer].square;
-  if (G.cells[square].className == 'go_back') {
+  if (G.cells[square].className === 'go_back') {
     // Enter special stage to handle board dynamics
     ctx.events.setStage({stage: 'board_stage', moveLimit: 4});
 
@@ -49,7 +49,7 @@ function ClearMessage(G, ctx, messageRef) {
   let square = G.pieces[ctx.currentPlayer].square;
   messageRef.current.classList.add("hide");
   messageRef.current.classList.remove("show");
-  if (G.cells[square].className == 'go_back') {
+  if (G.cells[square].className === 'go_back') {
     move(G, ctx, -3);
   }
   ctx.events.setStage('card_stage');
