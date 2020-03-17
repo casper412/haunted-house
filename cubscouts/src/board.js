@@ -16,16 +16,21 @@ export class CubScoutAdventureBoard extends React.Component {
     super(props);
     this.questionRef = React.createRef();
     this.answerQuestionRef = React.createRef();
+    this.messageRef = React.createRef();
 
     this.playerRefs = [React.createRef(), React.createRef()];
   }
 
   onClickBoard = () => {
-    this.props.moves.RollDie();
+    this.props.moves.RollDie(this.messageRef);
   }
 
   onClickCard = id => {
     this.props.moves.GetCard(this.questionRef, this.answerQuestionRef);
+  }
+
+  onClickMessage = id => {
+    this.props.moves.ClearMessage(this.messageRef);
   }
 
   onClickAnswer = id => {
@@ -144,6 +149,20 @@ export class CubScoutAdventureBoard extends React.Component {
     return question;
   }
 
+  renderMessage() {
+    let message =
+      <div key="message"
+            ref={this.messageRef}
+            className="message hide"
+            id="message"
+            onClick={() => this.onClickMessage()}
+            >
+          Camping trip cancelled because of rain, go back 3 spaces.<br/>
+          <span class='note'>Click to dismiss</span>
+      </div>
+    return message;
+  }
+
   renderAnswerQuestion() {
     let answerClass = "hide";
     if (this.props.G.question_answered_correctly !== null) {
@@ -177,6 +196,7 @@ export class CubScoutAdventureBoard extends React.Component {
     let winner = this.renderWinner();
     let last_roll = this.renderLastRoll();
     let card_deck = this.renderGetCard();
+    let message = this.renderMessage();
     let question_parts = [];
     if (!this.props.ctx.gameover) {
       question_parts.push(this.renderQuestion());
@@ -199,6 +219,7 @@ export class CubScoutAdventureBoard extends React.Component {
           {winner}
           {question_parts}
           {who_turn}
+          {message}
         </div>
       </div>
     );

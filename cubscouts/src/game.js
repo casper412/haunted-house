@@ -1,3 +1,5 @@
+import { TurnOrder } from 'boardgame.io/core';
+
 function IsVictory(pieces, cells) {
   for (var i = 0; i < pieces.length; i++) {
     if (pieces[i].square >= cells.length - 1) {
@@ -19,7 +21,7 @@ function move(G, ctx, dist, playerPiece) {
   }
 }
 
-function RollDie(G, ctx) {
+function RollDie(G, ctx, messageRef) {
   // Roll the dice
   var diceRoll = ctx.random.Die(6);
   move(G, ctx, diceRoll);
@@ -30,14 +32,30 @@ function RollDie(G, ctx) {
   G.question = ctx.random.Die(G.questions.length) - 1;
   G.question_answered = false;
   G.question_answered_correctly = null;
+
+  let square = G.pieces[ctx.currentPlayer].square;
+  if (G.cells[square].className == 'go_back') {
+    // Enter special stage to handle board dynamics
+    ctx.events.setStage({stage: 'board_stage', moveLimit: 4});
+
+    messageRef.current.classList.remove("hide");
+    messageRef.current.classList.add("show");
+  } else {
+    ctx.events.setStage({stage: 'card_stage', moveLimit: 3});
+  }
+}
+
+function ClearMessage(G, ctx, messageRef) {
+  let square = G.pieces[ctx.currentPlayer].square;
+  messageRef.current.classList.add("hide");
+  messageRef.current.classList.remove("show");
+  if (G.cells[square].className == 'go_back') {
+    move(G, ctx, -3);
+  }
   ctx.events.setStage('card_stage');
 }
 
 function GetCard(G, ctx, questionRef, answerQuestionRef) {
-  let square = G.pieces[ctx.currentPlayer].square;
-  if (G.cells[square].className == 'go_back') {
-    move(G, ctx, -3);
-  }
   // Show the question
   questionRef.current.classList.remove("answered");
   questionRef.current.classList.add("not-answered");
@@ -64,8 +82,8 @@ function SelectAnswer(G, ctx, id, questionRef, answerQuestionRef) {
   }
   answerQuestionRef.current.classList.remove("hide");
   // Change the stage and the turn
-  ctx.events.setActivePlayers({ all: 'move_stage'});
   ctx.events.endTurn();
+  ctx.events.setActivePlayers({ all: 'move_stage'});
 }
 
 export const CubScoutAdventure = {
@@ -149,9 +167,13 @@ export const CubScoutAdventure = {
   },
 
   turn: { 
+    order: TurnOrder.CONTINUE,
     stages: {
       move_stage: {
         moves: { RollDie },
+      },
+      board_stage: {
+        moves: { ClearMessage },
       },
       card_stage: {
         moves: { GetCard },
@@ -159,8 +181,7 @@ export const CubScoutAdventure = {
       question_stage: {
         moves: { SelectAnswer },
       },
-    },
-    moveLimit: 3
+    }
   },
 
   endIf: (G, ctx) => {

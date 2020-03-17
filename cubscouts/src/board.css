@@ -68,15 +68,15 @@ div.sand {
 }
 
 div.go_back {
-  color: #C62828;
+  color: #ccc;
   padding: 10px 0px 10px 0px;
   width: 46px;
   height: 26px;
   font-size: 10px;
-}
-
-div.go_back:before {
-  content: "Go Back 3 Spaces";
+  background-image: url('images/tents-in-rain.jpeg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: 0px 0px;
 }
 
 /* Controls what the bridge squares looks like */
@@ -305,4 +305,34 @@ div#instructions {
 div#instructions span.title {
   font-weight: bold;
   font-style: italic;
+}
+
+/* Render Message */
+div.message {
+  position: absolute;
+  padding-top: 30px;
+  padding-left: 30px;
+  font-size: 20px;
+  top: 150px;
+  left: 150px;
+  height: 50px;
+  width: 470px;
+  border: 4px solid black;
+  background: rgb(241, 241, 25);
+  border-radius: 20%;
+  opacity: 0.0;
+  transition: height 1s;
+  transition: opacity 3s;
+}
+
+div.message .note {
+  font-size: 8px;
+}
+
+div#message.hide {
+  opacity: 0.0;
+}
+
+div#message.show {
+  opacity: 1.0;
 }
