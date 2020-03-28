@@ -4,6 +4,14 @@
   font-family: monospace;
 }
 
+#root {
+  background: rgb(13, 155, 146);
+  background-image: url('images/background.jpeg');
+  background-size: cover;
+  height: 600px;
+  width: 1024px;
+}
+
 #winner {
   position: absolute;
   top: 550px;
@@ -67,8 +75,20 @@ div.sand {
   background-size: contain;
 }
 
-div.go_back {
-  color: #ccc;
+div.go_back_failed {
+  color: #c00;
+  padding: 10px 0px 10px 0px;
+  width: 46px;
+  height: 26px;
+  font-size: 10px;
+  background-image: url('images/gavel.jpeg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: 0px 0px;
+}
+
+div.go_back_camping {
+  color: #c00;
   padding: 10px 0px 10px 0px;
   width: 46px;
   height: 26px;
@@ -78,6 +98,31 @@ div.go_back {
   background-repeat: no-repeat;
   background-position: 0px 0px;
 }
+
+div.go_back_popcorn {
+  color: #c00;
+  padding: 10px 0px 10px 0px;
+  width: 46px;
+  height: 26px;
+  font-size: 10px;
+  background-image: url('images/popcorn.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: 0px 0px;
+}
+
+div.go_back_failed::before {
+  content: "Broke Scout Law";
+}
+
+div.go_back_camping::before {
+  content: "Rained Out";
+}
+
+div.go_back_popcorn::before {
+  content: "Selling Popcorn";
+}
+
 
 /* Controls what the bridge squares looks like */
 div.bridge {
@@ -294,9 +339,10 @@ div#who.player2 {
 }
 
 div#instructions {
+  color: #fff;
   position: absolute;
-  top: 500px;
-  left: 400px;
+  top: 510px;
+  left: 600px;
   width: 400px;
   border: 1px solid #555;
   padding: 10px;

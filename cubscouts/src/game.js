@@ -34,7 +34,7 @@ function RollDie(G, ctx, messageRef) {
   G.question_answered_correctly = null;
 
   let square = G.pieces[ctx.currentPlayer].square;
-  if (G.cells[square].className === 'go_back') {
+  if (G.cells[square].className.startsWith('go_back')) {
     // Enter special stage to handle board dynamics
     ctx.events.setStage({ stage: 'board_stage', moveLimit: 4 });
 
@@ -49,7 +49,7 @@ function ClearMessage(G, ctx, messageRef) {
   let square = G.pieces[ctx.currentPlayer].square;
   messageRef.current.classList.add("hide");
   messageRef.current.classList.remove("show");
-  if (G.cells[square].className === 'go_back') {
+  if (G.cells[square].className.startsWith('go_back')) {
     move(G, ctx, -3);
   }
   ctx.events.setStage('card_stage');
@@ -95,16 +95,16 @@ export const CubScoutAdventure = {
     return {
       cells:
         [
-          { className: 'start', top: 0, left: 0 }, // 0
-          { className: 'rocks', top: 50, left: 0 },
-          { className: 'field', top: 100, left: 5 },
-          { className: 'field', top: 150, left: 15 },
-          { className: 'field', top: 200, left: 25 },
-          { className: 'go_back', top: 250, left: 30 },
-          { className: 'marsh', top: 300, left: 35 },
-          { className: 'sand', top: 350, left: 45 },
-          { className: 'marsh', top: 400, left: 50 },
-          { className: 'field', top: 450, left: 58 },
+          { className: 'start', top: 20, left: 10 }, // 0
+          { className: 'rocks', top: 70, left: 18 },
+          { className: 'field', top: 120, left: 13 },
+          { className: 'field', top: 170, left: 15 },
+          { className: 'field', top: 220, left: 25 },
+          { className: 'go_back_failed', top: 270, left: 30 },
+          { className: 'marsh', top: 320, left: 35 },
+          { className: 'sand', top: 370, left: 45 },
+          { className: 'marsh', top: 420, left: 50 },
+          { className: 'field', top: 470, left: 58 },
           { className: 'rocks', top: 450, left: 108 }, // 10
           { className: 'rocks', top: 400, left: 125 },
           { className: 'marsh', top: 350, left: 130 },
@@ -118,7 +118,7 @@ export const CubScoutAdventure = {
           { className: 'field', top: 65, left: 226 }, // 20
           { className: 'marsh', top: 115, left: 230 },
           { className: 'field', top: 165, left: 233 },
-          { className: 'go_back', top: 215, left: 238 },
+          { className: 'go_back_popcorn', top: 215, left: 238 },
           { className: 'marsh', top: 265, left: 243 },
           { className: 'marsh', top: 315, left: 252 },
           { className: 'marsh', top: 365, left: 267 },
@@ -130,7 +130,7 @@ export const CubScoutAdventure = {
           { className: 'forest', top: 295, left: 355 },
           { className: 'rocks', top: 245, left: 360 },
           { className: 'rocks', top: 195, left: 365 },
-          { className: 'forest', top: 145, left: 370 },
+          { className: 'go_back_camping', top: 145, left: 370 },
           { className: 'rocks', top: 95, left: 375 },
           { className: 'rocks', top: 45, left: 380 },
           { className: 'forest', top: 35, left: 430 },
