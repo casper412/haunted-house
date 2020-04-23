@@ -12,7 +12,7 @@ class Balloon {
     }
   
     update(progress) {
-      this.pathDistance = this.pathDistance + (progress / 1000) * this.rate;
+      this.pathDistance = this.pathDistance + progress * this.rate;
       var pos = game.path.getLocation(this.pathDistance);
   
       if (pos == null) {

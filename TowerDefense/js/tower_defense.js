@@ -12,6 +12,8 @@ var menuWidth = 100;
 class Game {
   constructor() {
     this.gameRate = 1.;
+    this.maxGameRate = 10.;
+    this.minGameRate = 0.1;
     this.balloonId = 1;
     this.bulletId = 1;
 
@@ -20,10 +22,11 @@ class Game {
     this.bullets = {};
     this.path = new Path();
     this.running = false;
+    this.fixed_timestep = 0.1; // 200 ms
   }
   
   addRandomBallon() {
-    if (Math.random() > 0.99) {
+    if (Math.random() > 0.96) {
       var id = this.balloonId++;
       if (Math.random() > 0.5) {
         this.balloons[id] = new YellowBalloon(id);
@@ -50,11 +53,9 @@ class Game {
     delete this.bullets[this.id];
   }
   
-  update(progress) {
-    var timestep = progress * this.gameRate;
-  
+  do_update(timestep) {
     this.addRandomBallon();
-  
+    
     // Update the state of the world for the elapsed time since last render
     Object.keys(this.balloons).forEach(function(id) {
       let balloon = this.balloons[id];
@@ -70,16 +71,32 @@ class Game {
     }.bind(this));
   }
 
+  update(progress) {
+    var total_timestep = progress / 1000 * this.gameRate;
+    var time = 0;
+    total_timestep = Math.min(total_timestep, 1.);
+    while (time < total_timestep) {
+      var timestep = this.fixed_timestep;
+      if (time + this.fixed_timestep > total_timestep) {
+        timestep = total_timestep - time;
+      }
+      time += timestep;
+      this.do_update(timestep);
+    }
+  }
+
   doStop() {
     this.running = false;
   }
 
   doFaster() {
     this.gameRate *= 2.;
+    this.gameRate = Math.min(this.gameRate, this.maxGameRate);
   }
 
   doSlower() {
     this.gameRate /= 2.;
+    this.gameRate = Math.max(this.gameRate, this.minGameRate);
   }
 
   doStart() {

@@ -11,7 +11,7 @@ class Bullet {
     }
   
     update(progress) {
-      var move_dist = this.rate / 1000 * progress;
+      var move_dist = this.rate * progress;
       this.dist = this.dist + move_dist;
       this.x = this.x + move_dist;
       this.y = this.y;
