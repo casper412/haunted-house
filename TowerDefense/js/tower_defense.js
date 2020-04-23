@@ -1,5 +1,8 @@
-var canvas;
-var renderTime;
+
+var stage;
+var backgroundLayer;
+var towerLayer;
+var balloonLayer;
 
 var gameRate = 1.;
 var ballonId = 1;
@@ -8,7 +11,7 @@ var balloons = {};
 var path;
 var running = false;
 var lastRender;
-
+var menuWidth = 100;
 
 function doStop() {
   running = false;
@@ -36,16 +39,22 @@ class Path {
     ];
   }
 
-  draw(ctx) {
-    ctx.strokeStyle = "#666633";
-    ctx.lineWidth = 14;
-    ctx.beginPath();
-    ctx.moveTo(this.segments[0][0], this.segments[0][1]);
+  addToLayer(layer) {
+    var points = []
     for (let segmentPos in this.segments) {
       let segment = this.segments[segmentPos];
-      ctx.lineTo(segment[0], segment[1]);
+      points.push(segment[0]);
+      points.push(segment[1]);
     }
-    ctx.stroke();
+
+    var poly = new Konva.Line({
+      points: points,
+      fill: "black",
+      stroke: '#666633',
+      strokeWidth: 14,
+      closed: false
+    });
+    layer.add(poly);
   }
 
   getLocation(pathDistance) {
@@ -82,6 +91,8 @@ class Balloon {
     this.rate = rate;
     this.color = color;
     this.pathDistance = 0;
+    this.shape = null;
+    this.addToLayer(balloonLayer);
   }
 
   update(progress) {
@@ -93,18 +104,26 @@ class Balloon {
     } else {
       this.x = pos[0];
       this.y = pos[1];
+      this.shape.x(this.x);
+      this.shape.y(this.y);
     }
     //this.y = this.y+(progress/1000)*this.rate;
   }
 
-  draw(ctx) {
-    ctx.fillStyle = this.color;
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, 5, 0, 360);
-    ctx.fill();
+  addToLayer(layer) {
+    this.shape = new Konva.Circle({
+      x: this.x,
+      y: this.y,
+      radius: 5,
+      fill: this.color,
+      stroke: 'black',
+      strokeWidth: 0.5
+    });
+    layer.add(this.shape);
   }
 
   kill() {
+    this.shape.remove();
     delete balloons[this.id];
   }
 }
@@ -134,9 +153,7 @@ function update(progress) {
     	balloons[id] = new YellowBalloon(id);
     } else {
       balloons[id] = new RedBalloon(id);
-    }    	
-
-    
+    } 
   }
 
 
@@ -148,29 +165,13 @@ function update(progress) {
 }
 
 function draw() {
-  var ctx = canvas.getContext("2d");
-  //  FF 00 00  R G B
-  //  Hexadecimal
-  //  0 1 2 3 4 5 6 7 8 9 A B C D E F
-  //  0x10 => 16 d
-  //  0xF0 => 240 d
-  //  0xFF => 255 d
-
-  // Render background
-  ctx.fillStyle = "#008000";
-  ctx.fillRect(0, 0, 400, 400);
-
-  path.draw(ctx);
-
-  // Render Ballons
-  Object.keys(balloons).forEach(function(id) {
-    let balloon = balloons[id];
-    balloon.draw(ctx);
-  })
-  // Render Towners
+ backgroundLayer.batchDraw();
+ towerLayer.batchDraw();
+ balloonLayer.batchDraw();
 }
 
-function loop(timestamp) {
+function loop() {
+  var timestamp = Date.now();
   var progress = timestamp - lastRender
   	
   if (running) {
@@ -180,7 +181,57 @@ function loop(timestamp) {
   renderTime.textContent = round(progress) + " FPS: " + round(1000 / progress);
   
   lastRender = timestamp;
-  window.requestAnimationFrame(loop);
+}
+
+function setupStage() {
+  var canvas = document.getElementById("myCanvas");
+  
+  stage = new Konva.Stage({
+    container: 'myCanvas',
+    height: canvas.clientHeight,
+    width: canvas.clientWidth
+  });
+
+  backgroundLayer = new Konva.Layer();
+  towerLayer = new Konva.Layer();
+  balloonLayer = new Konva.Layer();
+
+  var background = new Konva.Rect({
+    x: 0,
+    y: 0,
+    width: stage.width() - menuWidth,
+    height: stage.height(),
+    fill: 'green',
+    strokeWidth: 0
+  });
+
+  var text = new Konva.Text({
+    x: 10,
+    y: 10,
+    fontFamily: 'Calibri',
+    fontSize: 24,
+    text: '',
+    fill: 'black'
+  });
+
+  background.on('mousedown touchstart', function() {
+    var touchPos = stage.getPointerPosition();
+    new Tower(0, touchPos.x, touchPos.y, 1.0);
+
+    message = 'x: ' + touchPos.x + ', y: ' + touchPos.y;
+    text.text(message);
+    backgroundLayer.draw();
+
+  });
+
+  backgroundLayer.add(background);
+  backgroundLayer.add(text);
+  path.addToLayer(backgroundLayer);
+
+  // add the layer to the stage
+  stage.add(backgroundLayer);
+  stage.add(towerLayer);
+  stage.add(balloonLayer);
 }
 
 //Game start
@@ -196,12 +247,14 @@ function init() {
   slowerButton.onclick = doSlower;
   startButton.onclick = doStart;
 
-  canvas = document.getElementById("myCanvas");
+  //canvas = document.getElementById("myCanvas");
   renderTime = document.getElementById("renderTime");
 
   //setup game
   path = new Path();
+  setupStage();
+
   //start rendering
-  lastRender = 0;
-  window.requestAnimationFrame(loop);
+  lastRender = Date.now();
+  setInterval(loop, 16);
 }
