@@ -9,12 +9,14 @@ class Tower {
     }
   
     update(progress) {
-      
+      if (Math.random() > 0.99) {
+        game.addBullet(this.x, this.y);
+      }
     }
   
     addToLayer(layer) {
-      var width = 20;
-      var height = 20;
+      var width = 50;
+      var height = 56;
       var widthOffset = width / 2.;
       var heightOffset = height / 2.;
       /*this.shape = new Konva.Rect({

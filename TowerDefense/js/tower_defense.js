@@ -4,29 +4,87 @@ var backgroundLayer;
 var towerLayer;
 var balloonLayer;
 
-var gameRate = 1.;
-var ballonId = 1;
-
-var balloons = {};
-var path;
-var running = false;
+var game;
 var lastRender;
+var textBarHeight = 50;
 var menuWidth = 100;
 
-function doStop() {
-  running = false;
-}
+class Game {
+  constructor() {
+    this.gameRate = 1.;
+    this.balloonId = 1;
+    this.bulletId = 1;
 
-function doFaster() {
-  gameRate *= 2.;
-}
+    this.balloons = {};
+    this.towers = [];
+    this.bullets = {};
+    this.path = new Path();
+    this.running = false;
+  }
+  
+  addRandomBallon() {
+    if (Math.random() > 0.99) {
+      var id = this.balloonId++;
+      if (Math.random() > 0.5) {
+        this.balloons[id] = new YellowBalloon(id);
+      } else {
+        this.balloons[id] = new RedBalloon(id);
+      } 
+    }
+  }
 
-function doSlower() {
-  gameRate /= 2.;
-}
+  addBullet(x, y) {
+    var id = this.bulletId++;
+    this.bullets[id] = new Bullet(id, x, y, 10.0);
+  }
 
-function doStart() {
-  running = true;
+  addTower(x, y) {
+    this.towers.push(new Tower(0, x, y, 1.0));
+  }
+
+  removeBalloon(id) {
+    delete this.balloons[this.id];
+  }
+
+  removeBullet(id) {
+    delete this.bullets[this.id];
+  }
+  
+  update(progress) {
+    var timestep = progress * this.gameRate;
+  
+    this.addRandomBallon();
+  
+    // Update the state of the world for the elapsed time since last render
+    Object.keys(this.balloons).forEach(function(id) {
+      let balloon = this.balloons[id];
+      balloon.update(timestep);
+    }.bind(this));
+
+    game.towers.forEach(function(tower) {
+      tower.update(timestep);
+    });
+    Object.keys(game.bullets).forEach(function(id) {
+      let bullet = this.bullets[id];
+      bullet.update(timestep);
+    }.bind(this));
+  }
+
+  doStop() {
+    this.running = false;
+  }
+
+  doFaster() {
+    this.gameRate *= 2.;
+  }
+
+  doSlower() {
+    this.gameRate /= 2.;
+  }
+
+  doStart() {
+    this.running = true;
+  }
 }
 
 class Path {
@@ -83,85 +141,8 @@ class Path {
   }
 }
 
-class Balloon {
-  constructor(id, rate, color) {
-    this.id = id;
-    this.x = 0;
-    this.y = 0;
-    this.rate = rate;
-    this.color = color;
-    this.pathDistance = 0;
-    this.shape = null;
-    this.addToLayer(balloonLayer);
-  }
-
-  update(progress) {
-    this.pathDistance = this.pathDistance + (progress / 1000) * this.rate;
-    var pos = path.getLocation(this.pathDistance);
-
-    if (pos == null) {
-      this.kill();
-    } else {
-      this.x = pos[0];
-      this.y = pos[1];
-      this.shape.x(this.x);
-      this.shape.y(this.y);
-    }
-    //this.y = this.y+(progress/1000)*this.rate;
-  }
-
-  addToLayer(layer) {
-    this.shape = new Konva.Circle({
-      x: this.x,
-      y: this.y,
-      radius: 5,
-      fill: this.color,
-      stroke: 'black',
-      strokeWidth: 0.5
-    });
-    layer.add(this.shape);
-  }
-
-  kill() {
-    this.shape.remove();
-    delete balloons[this.id];
-  }
-}
-
-class YellowBalloon extends Balloon {
-	constructor(id) {
-  	super(id, 40, "#cccc00");
-  }
-}
-
-class RedBalloon extends Balloon {
-	constructor(id) {
-  	super(id, 10, "#cc0000");
-  }
-}
-
 function round(val) {
   return Math.floor(val * 10 + 0.5) / 10
-}
-
-function update(progress) {
-  var timestep = progress * gameRate;
-
-  if (Math.random() > 0.99) {
-    var id = ballonId++;
-    if (Math.random() > 0.5) {
-    	balloons[id] = new YellowBalloon(id);
-    } else {
-      balloons[id] = new RedBalloon(id);
-    } 
-  }
-
-
-  // Update the state of the world for the elapsed time since last render
-  Object.keys(balloons).forEach(function(id) {
-    let balloon = balloons[id];
-    balloon.update(timestep);
-  })
 }
 
 function draw() {
@@ -174,11 +155,13 @@ function loop() {
   var timestamp = Date.now();
   var progress = timestamp - lastRender
   	
-  if (running) {
-    update(progress)
+  if (game.running) {
+    game.update(progress)
   }
   draw()
-  renderTime.textContent = round(progress) + " FPS: " + round(1000 / progress);
+  renderTime.textContent = round(progress) 
+      + " FPS: " + round(1000 / progress)
+      + " Game Speed: " + round(game.gameRate);
   
   lastRender = timestamp;
 }
@@ -200,14 +183,14 @@ function setupStage() {
     x: 0,
     y: 0,
     width: stage.width() - menuWidth,
-    height: stage.height(),
+    height: stage.height() - textBarHeight,
     fill: 'green',
     strokeWidth: 0
   });
 
   var text = new Konva.Text({
     x: 10,
-    y: 10,
+    y: stage.height() - textBarHeight,
     fontFamily: 'Calibri',
     fontSize: 24,
     text: '',
@@ -216,7 +199,7 @@ function setupStage() {
 
   background.on('mousedown touchstart', function() {
     var touchPos = stage.getPointerPosition();
-    new Tower(0, touchPos.x, touchPos.y, 1.0);
+    game.addTower(touchPos.x, touchPos.y);
 
     message = 'x: ' + touchPos.x + ', y: ' + touchPos.y;
     text.text(message);
@@ -226,7 +209,7 @@ function setupStage() {
 
   backgroundLayer.add(background);
   backgroundLayer.add(text);
-  path.addToLayer(backgroundLayer);
+  game.path.addToLayer(backgroundLayer);
 
   // add the layer to the stage
   stage.add(backgroundLayer);
@@ -242,16 +225,14 @@ function init() {
   var slowerButton = document.getElementById("slower");
   var startButton = document.getElementById("start");
 
-  stopButton.onclick = doStop;
-  fasterButton.onclick = doFaster;
-  slowerButton.onclick = doSlower;
-  startButton.onclick = doStart;
+  game = new Game();
+  stopButton.onclick = function(){game.doStop()};
+  fasterButton.onclick = function(){game.doFaster()};
+  slowerButton.onclick = function(){game.doSlower()};
+  startButton.onclick = function(){game.doStart()};
 
-  //canvas = document.getElementById("myCanvas");
   renderTime = document.getElementById("renderTime");
 
-  //setup game
-  path = new Path();
   setupStage();
 
   //start rendering
