@@ -10,7 +10,7 @@ var textBarHeight = 50;
 var menuWidth = 100;
 
 class Game {
-  constructor() {
+  constructor(width, height) {
     this.gameRate = 1.;
     this.maxGameRate = 10.;
     this.minGameRate = 0.1;
@@ -23,6 +23,17 @@ class Game {
     this.path = new Path();
     this.running = false;
     this.fixed_timestep = 0.1; // 200 ms
+    this.collision = new Collision(width, height);
+  }
+
+  isOffBoard(x, y) {
+    if (x < 0 || x > this.collision.width) {
+      return true;
+    }
+    if (y < 0 || y > this.collision.height) {
+      return true;
+    }
+    return false;
   }
   
   addRandomBallon() {
@@ -56,19 +67,27 @@ class Game {
   do_update(timestep) {
     this.addRandomBallon();
     
+    this.collision.clear();
     // Update the state of the world for the elapsed time since last render
     Object.keys(this.balloons).forEach(function(id) {
       let balloon = this.balloons[id];
-      balloon.update(timestep);
+      if (balloon.update(timestep)) {
+        this.collision.addBallon(balloon);
+      }
     }.bind(this));
 
     game.towers.forEach(function(tower) {
       tower.update(timestep);
     });
+
     Object.keys(game.bullets).forEach(function(id) {
       let bullet = this.bullets[id];
-      bullet.update(timestep);
+      if (bullet.update(timestep)) {
+        this.collision.addBullet(bullet);
+      }
     }.bind(this));
+
+    this.collision.processCollisions(game);
   }
 
   update(progress) {
@@ -133,7 +152,6 @@ class Path {
   }
 
   getLocation(pathDistance) {
-    var cummulativeDist = 0;
     var remainingDist = pathDistance;
     var currentX = this.segments[0][0];
     var currentY = this.segments[0][1];
@@ -241,8 +259,9 @@ function init() {
   var fasterButton = document.getElementById("faster");
   var slowerButton = document.getElementById("slower");
   var startButton = document.getElementById("start");
-
-  game = new Game();
+  var canvas = document.getElementById("myCanvas");
+  
+  game = new Game(canvas.clientWidth, canvas.clientHeight);
   stopButton.onclick = function(){game.doStop()};
   fasterButton.onclick = function(){game.doFaster()};
   slowerButton.onclick = function(){game.doSlower()};

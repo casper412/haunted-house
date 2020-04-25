@@ -17,12 +17,14 @@ class Balloon {
   
       if (pos == null) {
         this.kill();
+        return false;
       } else {
         this.x = pos[0];
         this.y = pos[1];
         this.shape.x(this.x);
         this.shape.y(this.y);
       }
+      return true;
     }
   
     addToLayer(layer) {

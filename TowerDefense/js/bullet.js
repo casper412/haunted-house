@@ -18,16 +18,19 @@ class Bullet {
       this.shape.x(this.x);
       this.shape.y(this.y);
 
-      if (this.dist > this.range) {
+      if (this.dist > this.range ||
+        game.isOffBoard(this.x, this.y)) {
         this.kill();
+        return false;
       }
+      return true;
     }
   
     addToLayer(layer) {
       var width = 5;
       var height = 5;
-      var widthOffset = width / 2.;
-      var heightOffset = height / 2.;
+      var widthOffset = width /2;
+      var heightOffset = height /2;
       this.shape = new Konva.Rect({
         x: this.x - widthOffset,
         y: this.y - heightOffset,
