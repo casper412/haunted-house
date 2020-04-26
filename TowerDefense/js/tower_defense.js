@@ -54,7 +54,7 @@ class Game {
   }
 
   addTower(point) {
-    this.towers.push(new AdvancedTower(0, point));
+    this.towers.push(new BasicTower(0, point));
   }
 
   removeBalloon(id) {
@@ -164,6 +164,33 @@ class Path {
       if (dist > remainingDist) {
         var offset = delta.times(remainingDist / dist);
         return current.add(offset);
+      } else {
+        current = next;
+        remainingDist -= dist;
+      }
+    }
+    return null;
+  }
+
+  getLineSegments(pathDistance) {
+    var remainingDist = pathDistance;
+    var current = this.segments[0];
+    for (let segmentPos = 1; segmentPos < this.segments.length; segmentPos++) {
+      let segment = this.segments[segmentPos];
+      var next = segment;
+      var delta = next.minus(current);
+      var dist = delta.getLength();
+      if (dist > remainingDist) {
+        var segments = [];
+        var offset = delta.times(remainingDist / dist);
+        var ncurrent = current.add(offset);
+        // First segment starts at the balloon location
+        for (let nSegmentPos = segmentPos; nSegmentPos < this.segments.length; nSegmentPos++) {
+          let nsegment = this.segments[nSegmentPos];
+          segments.push({a: ncurrent, b: nsegment});
+          ncurrent = nsegment;
+        }
+        return segments;
       } else {
         current = next;
         remainingDist -= dist;

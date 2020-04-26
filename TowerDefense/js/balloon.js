@@ -45,7 +45,7 @@ class Balloon {
   
   class YellowBalloon extends Balloon {
       constructor(id) {
-        super(id, 40, "#cccc00");
+        super(id, 50, "#cccc00");
     }
   }
   

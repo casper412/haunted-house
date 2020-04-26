@@ -43,7 +43,7 @@ class Collision {
       this.tree[cellPos[0]][cellPos[1]].bullets.push(bullet);
     }
 
-    getFirstBalloon(location, range) {
+    getFirstBalloons(location, range) {
       var cellPos = this.getCellPos(location);
       var balloons = [];
       var cellRange = Math.ceil(range / this.cellSize);
@@ -58,14 +58,7 @@ class Collision {
       }
 
       balloons.sort((a, b) => b.pathDistance - a.pathDistance);
-
-      for (var i = 0; i < balloons.length; i++) {
-        var delta = location.minus(balloons[i].loc);
-        if (delta.getLength() < range) {
-          return balloons[i];
-        }
-      }
-      return null;
+      return balloons;
     }
 
     getCellPos(location) {

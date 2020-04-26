@@ -27,15 +27,11 @@ class Bullet {
     }
   
     addToLayer(layer) {
-      var width = 5;
-      var height = 5;
-      var widthOffset = width /2;
-      var heightOffset = height /2;
-      this.shape = new Konva.Rect({
-        x: this.loc.x - widthOffset,
-        y: this.loc.y - heightOffset,
-        width: width,
-        height: height,
+      var radius = 2;
+      this.shape = new Konva.Circle({
+        x: this.loc.x,
+        y: this.loc.y,
+        radius: radius,
         fill: 'blue',
         stroke: 'black',
         strokeWidth: 0.5
