@@ -2,8 +2,7 @@
 class Balloon {
     constructor(id, rate, color) {
       this.id = id;
-      this.x = 0;
-      this.y = 0;
+      this.loc = new Point(0, 0);
       this.rate = rate;
       this.color = color;
       this.pathDistance = 0;
@@ -19,18 +18,17 @@ class Balloon {
         this.kill();
         return false;
       } else {
-        this.x = pos[0];
-        this.y = pos[1];
-        this.shape.x(this.x);
-        this.shape.y(this.y);
+        this.loc = pos;
+        this.shape.x(this.loc.x);
+        this.shape.y(this.loc.y);
       }
       return true;
     }
   
     addToLayer(layer) {
       this.shape = new Konva.Circle({
-        x: this.x,
-        y: this.y,
+        x: this.loc.x,
+        y: this.loc.y,
         radius: 5,
         fill: this.color,
         stroke: 'black',

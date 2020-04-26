@@ -1,10 +1,8 @@
 class Bullet {
-    constructor(id, x, y, x_dir, y_dir, rate, range) {
+    constructor(id, location, direction, rate, range) {
       this.id = id;
-      this.x = x;
-      this.y = y;
-      this.x_dir = x_dir;
-      this.y_dir = y_dir;
+      this.loc = location;
+      this.dir = direction;
       this.rate = rate;
       this.dist = 0;
       this.range = range;
@@ -15,13 +13,13 @@ class Bullet {
     update(progress) {
       var move_dist = this.rate * progress;
       this.dist = this.dist + move_dist;
-      this.x += this.x_dir * move_dist;
-      this.y += this.y_dir * move_dist;
-      this.shape.x(this.x);
-      this.shape.y(this.y);
+      this.loc.x += this.dir.x * move_dist;
+      this.loc.y += this.dir.y * move_dist;
+      this.shape.x(this.loc.x);
+      this.shape.y(this.loc.y);
 
       if (this.dist > this.range ||
-        game.isOffBoard(this.x, this.y)) {
+        game.isOffBoard(this.loc.x, this.loc.y)) {
         this.kill();
         return false;
       }
@@ -34,8 +32,8 @@ class Bullet {
       var widthOffset = width /2;
       var heightOffset = height /2;
       this.shape = new Konva.Rect({
-        x: this.x - widthOffset,
-        y: this.y - heightOffset,
+        x: this.loc.x - widthOffset,
+        y: this.loc.y - heightOffset,
         width: width,
         height: height,
         fill: 'blue',

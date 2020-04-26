@@ -1,31 +1,28 @@
 class Tower {
-    constructor(id, x, y, rate) {
+    constructor(id, location, firing_rate, rate, range) {
       this.id = id;
-      this.x = x;
-      this.y = y;
+      this.loc = location;
       this.rate = rate;
-      this.firing_rate = 1.;
+      this.firing_rate = firing_rate;
       this.last_fire = 0;
       this.shape = null;
-      this.range = 200;
+      this.range = range;
       this.addToLayer(towerLayer);
     }
   
     update(current_time, progress, collision) {
 
       // Select a ballon
-      var balloon = collision.getFirstBalloon(this.x, this.y, this.range);
+      var balloon = collision.getFirstBalloon(this.loc, this.range);
       if (balloon) {
         // Decide if turning is needed
         // Decide to fire
         if (current_time - this.last_fire > this.firing_rate) {
           this.last_fire = current_time;
-          var x_dir = balloon.x - this.x;
-          var y_dir = balloon.y - this.y;
-          var mag = collision.getDistance(0, 0, x_dir, y_dir);
-          x_dir /= mag;
-          y_dir /= mag;
-          game.addBullet(this.x, this.y, x_dir, y_dir, this.rate, this.range);
+          var dir = balloon.loc.minus(this.loc);
+          var mag = dir.getLength();
+          var unit_dir = dir.times(1. / mag);
+          game.addBullet(this.loc.copy(), unit_dir, this.rate, this.range);
         }
       }
     }
@@ -52,8 +49,8 @@ class Tower {
               ]
       };
       this.shape = new Konva.Sprite({
-        x: this.x - widthOffset,
-        y: this.y - heightOffset,
+        x: this.loc.x - widthOffset,
+        y: this.loc.y - heightOffset,
         image: imageObj,
         animation: 'idle',
         animations: animations,
@@ -64,7 +61,16 @@ class Tower {
       layer.add(this.shape);
       imageObj.src = './assets/generic-sprite.jpg';
     }
-  
-    
-  }
+}
 
+class BasicTower extends Tower {
+    constructor(id, location) {
+      super(id, location, 1., 30., 200.);
+    }
+}
+
+class AdvancedTower extends Tower {
+  constructor(id, location) {
+    super(id, location, 0.5, 50., 300.);
+  }
+}

@@ -48,21 +48,21 @@ class Game {
     }
   }
 
-  addBullet(x, y, x_dir, y_dir, rate, range) {
+  addBullet(location, direction, rate, range) {
     var id = this.bulletId++;
-    this.bullets[id] = new Bullet(id, x, y, x_dir, y_dir, rate, range);
+    this.bullets[id] = new Bullet(id, location, direction, rate, range);
   }
 
-  addTower(x, y) {
-    this.towers.push(new Tower(0, x, y, 30.0));
+  addTower(point) {
+    this.towers.push(new AdvancedTower(0, point));
   }
 
   removeBalloon(id) {
-    delete this.balloons[this.id];
+    delete this.balloons[id];
   }
 
   removeBullet(id) {
-    delete this.bullets[this.id];
+    delete this.bullets[id];
   }
   
   do_update(timestep) {
@@ -128,10 +128,10 @@ class Game {
 class Path {
   constructor() {
     this.segments = [
-      [0, 40],
-      [210, 40],
-      [210, 100],
-      [400, 400]
+      new Point(0, 40),
+      new Point(210, 40),
+      new Point(210, 100),
+      new Point(400, 400)
     ];
   }
 
@@ -139,8 +139,8 @@ class Path {
     var points = []
     for (let segmentPos in this.segments) {
       let segment = this.segments[segmentPos];
-      points.push(segment[0]);
-      points.push(segment[1]);
+      points.push(segment.x);
+      points.push(segment.y);
     }
 
     var poly = new Konva.Line({
@@ -155,22 +155,17 @@ class Path {
 
   getLocation(pathDistance) {
     var remainingDist = pathDistance;
-    var currentX = this.segments[0][0];
-    var currentY = this.segments[0][1];
+    var current = this.segments[0];
     for (let segmentPos = 1; segmentPos < this.segments.length; segmentPos++) {
       let segment = this.segments[segmentPos];
-      var nextX = segment[0];
-      var nextY = segment[1];
-      var deltaX = nextX - currentX;
-      var deltaY = nextY - currentY;
-      var dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+      var next = segment;
+      var delta = next.minus(current);
+      var dist = delta.getLength();
       if (dist > remainingDist) {
-        var offsetX = deltaX / dist * remainingDist;
-        var offsetY = deltaY / dist * remainingDist;
-        return [currentX + offsetX, currentY + offsetY];
+        var offset = delta.times(remainingDist / dist);
+        return current.add(offset);
       } else {
-        currentX = nextX;
-        currentY = nextY;
+        current = next;
         remainingDist -= dist;
       }
     }
@@ -236,7 +231,7 @@ function setupStage() {
 
   background.on('mousedown touchstart', function() {
     var touchPos = stage.getPointerPosition();
-    game.addTower(touchPos.x, touchPos.y);
+    game.addTower(new Point(touchPos.x, touchPos.y));
 
     message = 'x: ' + touchPos.x + ', y: ' + touchPos.y;
     text.text(message);
