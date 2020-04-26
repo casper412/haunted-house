@@ -23,6 +23,7 @@ class Game {
     this.path = new Path();
     this.running = false;
     this.fixed_timestep = 0.1; // 200 ms
+    this.current_time = 0.;
     this.collision = new Collision(width, height);
   }
 
@@ -47,13 +48,13 @@ class Game {
     }
   }
 
-  addBullet(x, y) {
+  addBullet(x, y, x_dir, y_dir, rate, range) {
     var id = this.bulletId++;
-    this.bullets[id] = new Bullet(id, x, y, 10.0);
+    this.bullets[id] = new Bullet(id, x, y, x_dir, y_dir, rate, range);
   }
 
   addTower(x, y) {
-    this.towers.push(new Tower(0, x, y, 1.0));
+    this.towers.push(new Tower(0, x, y, 30.0));
   }
 
   removeBalloon(id) {
@@ -65,6 +66,7 @@ class Game {
   }
   
   do_update(timestep) {
+    this.current_time += timestep;
     this.addRandomBallon();
     
     this.collision.clear();
@@ -77,8 +79,8 @@ class Game {
     }.bind(this));
 
     game.towers.forEach(function(tower) {
-      tower.update(timestep);
-    });
+      tower.update(this.current_time, timestep, this.collision);
+    }.bind(this));
 
     Object.keys(game.bullets).forEach(function(id) {
       let bullet = this.bullets[id];

@@ -1,11 +1,13 @@
 class Bullet {
-    constructor(id,x,y,rate) {
+    constructor(id, x, y, x_dir, y_dir, rate, range) {
       this.id = id;
       this.x = x;
       this.y = y;
+      this.x_dir = x_dir;
+      this.y_dir = y_dir;
       this.rate = rate;
       this.dist = 0;
-      this.range = 200;
+      this.range = range;
       this.shape = null;
       this.addToLayer(towerLayer);
     }
@@ -13,8 +15,8 @@ class Bullet {
     update(progress) {
       var move_dist = this.rate * progress;
       this.dist = this.dist + move_dist;
-      this.x = this.x + move_dist;
-      this.y = this.y;
+      this.x += this.x_dir * move_dist;
+      this.y += this.y_dir * move_dist;
       this.shape.x(this.x);
       this.shape.y(this.y);
 
