@@ -285,7 +285,7 @@ function init() {
   var startButton = document.getElementById("start");
   var canvas = document.getElementById("myCanvas");
   
-  game = new Game(canvas.clientWidth, canvas.clientHeight);
+  game = new Game(canvas.clientWidth - menuWidth, canvas.clientHeight - textBarHeight);
   stopButton.onclick = function(){game.doStop()};
   fasterButton.onclick = function(){game.doFaster()};
   slowerButton.onclick = function(){game.doSlower()};
