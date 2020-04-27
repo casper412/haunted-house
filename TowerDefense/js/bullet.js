@@ -9,7 +9,7 @@ class Bullet {
       this.shape = null;
       this.radius = 2;
       this.hitPoints = 1;
-      this.addToLayer(towerLayer);
+      this.addToLayer(balloonLayer);
     }
   
     update(progress) {

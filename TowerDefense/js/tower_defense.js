@@ -6,6 +6,7 @@ var balloonLayer;
 
 var game;
 var lastRender;
+var fpsMovingAverage = 60;
 var textBarHeight = 50;
 var menuWidth = 100;
 
@@ -212,8 +213,9 @@ function loop() {
     game.update(progress)
   }
   draw()
+  fpsMovingAverage = (1000 / progress) * 0.05 + fpsMovingAverage * 0.95;
   renderTime.textContent = round(progress) 
-      + " FPS: " + round(1000 / progress)
+      + " FPS: " + round(fpsMovingAverage)
       + " Game Speed: " + round(game.gameRate);
   
   lastRender = timestamp;
@@ -230,7 +232,7 @@ function setupStage() {
 
   backgroundLayer = new Konva.Layer();
   towerLayer = new Konva.Layer();
-  balloonLayer = new Konva.Layer();
+  balloonLayer = new Konva.FastLayer();
 
   var background = new Konva.Rect({
     x: 0,
