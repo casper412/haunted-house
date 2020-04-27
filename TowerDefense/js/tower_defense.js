@@ -3,6 +3,7 @@ var stage;
 var backgroundLayer;
 var towerLayer;
 var balloonLayer;
+var menuLayer;
 
 var game;
 var lastRender;
@@ -200,9 +201,10 @@ function round(val) {
 }
 
 function draw() {
- backgroundLayer.batchDraw();
- towerLayer.batchDraw();
- balloonLayer.batchDraw();
+  backgroundLayer.batchDraw();
+  towerLayer.batchDraw();
+  balloonLayer.batchDraw();
+  menuLayer.batchDraw();
 }
 
 function loop() {
@@ -230,6 +232,7 @@ function setupStage() {
     width: canvas.clientWidth
   });
 
+  menuLayer = new Konva.Layer();
   backgroundLayer = new Konva.Layer();
   towerLayer = new Konva.Layer();
   balloonLayer = new Konva.FastLayer();
@@ -270,6 +273,7 @@ function setupStage() {
   stage.add(backgroundLayer);
   stage.add(towerLayer);
   stage.add(balloonLayer);
+  stage.add(menuLayer);
 }
 
 //Game start
