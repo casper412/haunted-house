@@ -7,6 +7,7 @@ class Bullet {
       this.dist = 0;
       this.range = range;
       this.shape = null;
+      this.radius = 2;
       this.addToLayer(towerLayer);
     }
   
@@ -27,11 +28,10 @@ class Bullet {
     }
   
     addToLayer(layer) {
-      var radius = 2;
       this.shape = new Konva.Circle({
         x: this.loc.x,
         y: this.loc.y,
-        radius: radius,
+        radius: this.radius,
         fill: 'blue',
         stroke: 'black',
         strokeWidth: 0.5

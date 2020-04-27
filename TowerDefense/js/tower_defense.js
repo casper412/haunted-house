@@ -28,17 +28,11 @@ class Game {
   }
 
   isOffBoard(x, y) {
-    if (x < 0 || x > this.collision.width) {
-      return true;
-    }
-    if (y < 0 || y > this.collision.height) {
-      return true;
-    }
-    return false;
+    return this.collision.isOffBoard(x, y);
   }
   
   addRandomBallon() {
-    if (Math.random() > 0.96) {
+    if (Math.random() > 0.95) {
       var id = this.balloonId++;
       if (Math.random() > 0.5) {
         this.balloons[id] = new YellowBalloon(id);

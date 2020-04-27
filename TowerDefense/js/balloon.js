@@ -7,6 +7,7 @@ class Balloon {
       this.color = color;
       this.pathDistance = 0;
       this.shape = null;
+      this.radius = 5;
       this.addToLayer(balloonLayer);
     }
   
@@ -29,7 +30,7 @@ class Balloon {
       this.shape = new Konva.Circle({
         x: this.loc.x,
         y: this.loc.y,
-        radius: 5,
+        radius: this.radius,
         fill: this.color,
         stroke: 'black',
         strokeWidth: 0.5

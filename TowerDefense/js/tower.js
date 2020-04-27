@@ -177,12 +177,12 @@ class Tower {
 
 class BasicTower extends Tower {
     constructor(id, location) {
-      super(id, location, 1., 50., 150.);
+      super(id, location, 2.0, 100., 100.);
     }
 }
 
 class AdvancedTower extends Tower {
   constructor(id, location) {
-    super(id, location, 0.5, 60., 200.);
+    super(id, location, 1.5, 120., 150.);
   }
 }
