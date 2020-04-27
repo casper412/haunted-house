@@ -104,13 +104,16 @@ class Collision {
         column.forEach(function(cell) {
           if (cell.bullets.length > 0) {
             cell.bullets.forEach(bullet => {
-              cell.balloons.forEach(balloon => {
-                var delta = bullet.loc.minus(balloon.loc);
-                var dist = delta.getLength();
-                if (dist < balloon.radius + bullet.radius) {
-                  balloon.kill();
-                }
-              });
+              if (bullet.hitPoints > 0) {
+                cell.balloons.forEach(balloon => {
+                  var delta = bullet.loc.minus(balloon.loc);
+                  var dist = delta.getLength();
+                  if (dist < balloon.radius + bullet.radius) {
+                    balloon.kill();
+                    bullet.kill();
+                  }
+                });
+              }//end hit points
             });
           }//if
         });//cell

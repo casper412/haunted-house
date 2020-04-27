@@ -1,13 +1,14 @@
 
 class Balloon {
-    constructor(id, rate, color) {
+    constructor(id, hitPoints) {
       this.id = id;
       this.loc = new Point(0, 0);
-      this.rate = rate;
-      this.color = color;
+      this.rate = this.getRate(hitPoints);
+      this.color = this.getColor(hitPoints);
       this.pathDistance = 0;
       this.shape = null;
       this.radius = 5;
+      this.hitPoints = hitPoints;
       this.addToLayer(balloonLayer);
     }
   
@@ -39,20 +40,56 @@ class Balloon {
     }
   
     kill() {
-      this.shape.remove();
-      game.removeBalloon(this.id);
+      this.hitPoints -= 1;
+      if (this.hitPoints <= 0) {
+        this.shape.remove();
+        game.removeBalloon(this.id);
+      } else {
+        this.color = this.getColor(this.hitPoints);
+        this.rate = this.getRate(this.hitPoints);
+        this.shape.fill(this.color);
+      }
     }
-  }
-  
-  class YellowBalloon extends Balloon {
-      constructor(id) {
-        super(id, 50, "#cccc00");
+
+    getColor(hitPoints) {
+      switch(hitPoints) {
+        case 1:
+          return "#cc0000";
+        case 2:
+            return "#0000cc";
+        case 3:
+          return "#00cc00";
+        case 4:
+          return "#00cccc";
+        case 5:
+          return "#cccc00";
+      }
     }
-  }
-  
-  class RedBalloon extends Balloon {
-      constructor(id) {
-        super(id, 10, "#cc0000");
+
+    getRate(hitPoints) {
+      switch(hitPoints) {
+        case 1:
+          return 10;
+        case 2:
+            return 20;
+        case 3:
+          return 30;
+        case 4:
+          return 40;
+        case 5:
+          return 50;
+      }
     }
-  }
+}
   
+class YellowBalloon extends Balloon {
+    constructor(id) {
+      super(id, 5);
+  }
+}
+
+class RedBalloon extends Balloon {
+    constructor(id) {
+      super(id, 1);
+  }
+}

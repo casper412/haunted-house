@@ -8,6 +8,7 @@ class Bullet {
       this.range = range;
       this.shape = null;
       this.radius = 2;
+      this.hitPoints = 1;
       this.addToLayer(towerLayer);
     }
   
@@ -40,8 +41,11 @@ class Bullet {
     }
 
     kill() {
-      this.shape.remove();
-      game.removeBullet(this.id);
+      this.hitPoints -= 1;
+      if (this.hitPoints <= 0) {
+        this.shape.remove();
+        game.removeBullet(this.id);
+      }
     }
   }
 
