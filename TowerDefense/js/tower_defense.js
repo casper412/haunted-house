@@ -9,9 +9,13 @@ var game;
 var player;
 var levelRender;
 var lastRender;
+var menu;
+
+// Layout Constants
 var fpsMovingAverage = 60;
 var textBarHeight = 50;
 var menuWidth = 100;
+var playerStatHeight = 50;
 
 class Game {
   constructor(width, height) {
@@ -32,6 +36,10 @@ class Game {
 
     this.level = 1;
     this.levels = [null, new LevelOne(), new LevelTwo()];
+
+
+    // Mutable Game State
+    this.typeOfTowerToPlace = BasicTower;
   }
 
   isOffBoard(x, y) {
@@ -44,12 +52,16 @@ class Game {
   }
 
   addTower(point) {
-    if (player.getMoney() > BasicTower.cost) {
-      player.buy(BasicTower.cost);
-      this.towers.push(new BasicTower(0, point));
+    if (player.getMoney() > this.typeOfTowerToPlace.cost) {
+      player.buy(this.typeOfTowerToPlace.cost);
+      this.towers.push(new this.typeOfTowerToPlace(0, point));
     } else {
       // Not Enough Money
     }
+  }
+
+  setTypeOfTowerToPlace(towerType) {
+    this.typeOfTowerToPlace = towerType;
   }
 
   addBalloon(balloon) {
@@ -332,8 +344,11 @@ function init() {
   renderTime = document.getElementById("renderTime");
 
   setupStage();
-  player = new Player();
+  player = new Player(stage.width() - menuWidth, 0, menuWidth, playerStatHeight);
   levelRender = new LevelRender();
+
+  menu = new Menu(game, menuLayer, stage.width() - menuWidth, playerStatHeight, 
+    menuWidth, stage.height() - playerStatHeight - textBarHeight);
 
   //start rendering
   lastRender = Date.now();

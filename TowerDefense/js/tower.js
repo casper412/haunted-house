@@ -1,12 +1,14 @@
 class Tower {    
-    constructor(id, location, firing_rate, rate, range) {
+    constructor(id, location, image, animations, firing_rate, bullet_speed, range) {
       this.id = id;
       this.loc = location;
-      this.rate = rate;
+      this.image = image;
+      this.animations = animations;
       this.firing_rate = firing_rate;
+      this.bullet_speed = bullet_speed;
+      this.range = range;
       this.last_fire = 0;
       this.shape = null;
-      this.range = range;
       this.addToLayer(towerLayer);
     }
   
@@ -18,7 +20,7 @@ class Tower {
       var path = game.path;
       var segments = path.getLineSegments(balloon.pathDistance);
       var timeToSegment = 0.; // Already on the first segment
-      var maxTimeOfFlight = this.range / this.rate; // time = distance / rate
+      var maxTimeOfFlight = this.range / this.bullet_speed; // time = distance / rate
       for (let segmentPos = 0; segmentPos < segments.length; segmentPos++) {
         let segment = segments[segmentPos];
         var src = this.loc;
@@ -36,7 +38,7 @@ class Tower {
         let dist = remainingSegment.getLength();
         let timeToSegmentEnd = dist / balloon.rate; // time = distance / rate
 
-        var interceptPt = this.intercept(src, dst, this.rate, maxTimeOfFlight, timeToSegmentEnd);
+        var interceptPt = this.intercept(src, dst, this.bullet_speed, maxTimeOfFlight, timeToSegmentEnd);
         if (interceptPt) {
           var firing_vec = new Point(interceptPt.x - this.loc.x, interceptPt.y - this.loc.y);
           let fire_dist = firing_vec.getLength();
@@ -64,7 +66,7 @@ class Tower {
           var dir = this.getFiringDirection(balloons[i]);
           if (dir) {
             // Decide to fire
-            game.addBullet(this.loc.copy(), dir, this.rate, this.range);
+            game.addBullet(this.loc.copy(), dir, this.bullet_speed, this.range);
             this.last_fire = current_time;
             break;
           }
@@ -78,37 +80,22 @@ class Tower {
 
     addToLayer(layer) {
       var width = 50;
-      var height = 56;
+      var height = 50;
       var widthOffset = width / 2.;
       var heightOffset = height / 2.;
-      /*this.shape = new Konva.Rect({
-        x: this.x - widthOffset,
-        y: this.y - heightOffset,
-        width: width,
-        height: height,
-        fill: 'blue',
-        stroke: 'black',
-        strokeWidth: 0.5
-      });*/
       var imageObj = new Image();
-      var animations = {
-        idle: [
-                0, 0, 50, 56,
-               49, 0, 50, 56
-              ]
-      };
       this.shape = new Konva.Sprite({
         x: this.loc.x - widthOffset,
         y: this.loc.y - heightOffset,
         image: imageObj,
         animation: 'idle',
-        animations: animations,
+        animations: this.animations,
         frameRate: 2,
         frameIndex: 0
       });
       this.shape.start();
       layer.add(this.shape);
-      imageObj.src = './assets/generic-sprite.jpg';
+      imageObj.src = this.image;
     }
 
     /**
@@ -151,10 +138,8 @@ class Tower {
           };
         }
       }
-
       return sol;
     }
-
 
     /**
      * Return solutions for quadratic
@@ -182,12 +167,40 @@ class Tower {
 class BasicTower extends Tower {
     static cost = 150;
     constructor(id, location) {
-      super(id, location, 2.0, 100., 100.);
+      super(id, location, 
+        './assets/generic-sprite.jpg',
+        { // Animations
+          idle: [
+                  0, 0, 50, 56,
+                 49, 0, 50, 56
+                ]
+        },
+        2.0, 100., 100.);
     }
 }
 
-class AdvancedTower extends Tower {
+class FootSoldierTower extends Tower {
+  static cost = 50;
   constructor(id, location) {
-    super(id, location, 1.5, 120., 150.);
+    super(id, location, './assets/footman.png',
+      { // Animations
+        idle: [
+                0, 0, 75, 75,
+              ]
+      },
+      2.0, 100., 100.);
+  }
+}
+
+class SniperTower extends Tower {
+  static cost = 75;
+  constructor(id, location) {
+    super(id, location, './assets/sniper.png',
+      { // Animations
+        idle: [
+                0, 0, 75, 75,
+              ]
+      },
+      3.0, 320., 450.);
   }
 }
