@@ -17,7 +17,7 @@ class Balloon {
       var pos = game.path.getLocation(this.pathDistance);
   
       if (pos == null) {
-        this.kill();
+        this.die();
         return false;
       } else {
         this.loc = pos;
@@ -39,6 +39,19 @@ class Balloon {
       layer.add(this.shape);
     }
   
+    shot() {
+      player.earn(10);
+      player.advance(20);
+      this.kill();
+    }
+
+    die() {
+      player.hurt(1);
+      while(this.hitPoints > 0) {
+        this.kill();
+      }
+    }
+
     kill() {
       this.hitPoints -= 1;
       if (this.hitPoints <= 0) {

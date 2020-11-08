@@ -109,7 +109,7 @@ class Collision {
                   var delta = bullet.loc.minus(balloon.loc);
                   var dist = delta.getLength();
                   if (dist < balloon.radius + bullet.radius) {
-                    balloon.kill();
+                    balloon.shot();
                     bullet.kill();
                   }
                 });

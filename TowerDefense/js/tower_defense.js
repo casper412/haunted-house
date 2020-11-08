@@ -6,6 +6,8 @@ var balloonLayer;
 var menuLayer;
 
 var game;
+var player;
+var levelRender;
 var lastRender;
 var fpsMovingAverage = 60;
 var textBarHeight = 50;
@@ -27,30 +29,33 @@ class Game {
     this.fixed_timestep = 0.1; // 200 ms
     this.current_time = 0.;
     this.collision = new Collision(width, height);
+
+    this.level = 1;
+    this.levels = [null, new LevelOne(), new LevelTwo()];
   }
 
   isOffBoard(x, y) {
     return this.collision.isOffBoard(x, y);
   }
   
-  addRandomBallon() {
-    if (Math.random() > 0.95) {
-      var id = this.balloonId++;
-      if (Math.random() > 0.5) {
-        this.balloons[id] = new YellowBalloon(id);
-      } else {
-        this.balloons[id] = new RedBalloon(id);
-      } 
-    }
-  }
-
   addBullet(location, direction, rate, range) {
     var id = this.bulletId++;
     this.bullets[id] = new Bullet(id, location, direction, rate, range);
   }
 
   addTower(point) {
-    this.towers.push(new BasicTower(0, point));
+    if (player.getMoney() > BasicTower.cost) {
+      player.buy(BasicTower.cost);
+      this.towers.push(new BasicTower(0, point));
+    } else {
+      // Not Enough Money
+    }
+  }
+
+  addBalloon(balloon) {
+    var id = this.balloonId++;
+    this.balloons[id] = balloon;
+    balloon.id = id;
   }
 
   removeBalloon(id) {
@@ -60,10 +65,29 @@ class Game {
   removeBullet(id) {
     delete this.bullets[id];
   }
+
+  nextLevel() {
+    this.stop();
+    this.level++;
+    // Remove all the items
+    this.balloonId = 0;
+    this.balloons = {};
+    this.bulletId = 0;
+    this.bullets = {};
+
+    game.towers.forEach(function(tower) {
+      tower.kill();
+    }.bind(this));
+    game.towers = [];
+
+    if (this.level > this.levels.length) {
+      this.gameOver();
+    }
+  }
   
   do_update(timestep) {
     this.current_time += timestep;
-    this.addRandomBallon();
+    this.levels[this.level].addBalloon(this.current_time, timestep);
     
     this.collision.clear();
     // Update the state of the world for the elapsed time since last render
@@ -86,6 +110,12 @@ class Game {
     }.bind(this));
 
     this.collision.processCollisions(game);
+
+    if(this.levels[this.level].isLevelOver(this.current_time)) {
+      if (Object.keys(this.balloons).length > 0) {
+        this.nextLevel();
+      }
+    }
   }
 
   update(progress) {
@@ -102,6 +132,10 @@ class Game {
     }
   }
 
+  gameOver() {
+    this.running = false;
+  }
+  
   doStop() {
     this.running = false;
   }
@@ -213,7 +247,10 @@ function loop() {
   	
   if (game.running) {
     game.update(progress)
+    player.update(progress);
+    levelRender.update(progress);
   }
+
   draw()
   fpsMovingAverage = (1000 / progress) * 0.05 + fpsMovingAverage * 0.95;
   renderTime.textContent = round(progress) 
@@ -259,10 +296,9 @@ function setupStage() {
     var touchPos = stage.getPointerPosition();
     game.addTower(new Point(touchPos.x, touchPos.y));
 
-    message = 'x: ' + touchPos.x + ', y: ' + touchPos.y;
+    var message = 'x: ' + touchPos.x + ', y: ' + touchPos.y;
     text.text(message);
     backgroundLayer.draw();
-
   });
 
   backgroundLayer.add(background);
@@ -294,6 +330,8 @@ function init() {
   renderTime = document.getElementById("renderTime");
 
   setupStage();
+  player = new Player();
+  levelRender = new LevelRender();
 
   //start rendering
   lastRender = Date.now();

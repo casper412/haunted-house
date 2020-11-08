@@ -8,7 +8,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "Launch Chrome against localhost",
-            "url": "D:\\Work\\haunted-house\\TowerDefense\\index.htm",
+            "url": "file:///Users/mjhall/personal/haunted-house/TowerDefense/index.htm",
             "webRoot": "${workspaceFolder}"
         }
     ]

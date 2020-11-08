@@ -1,4 +1,4 @@
-class Tower {
+class Tower {    
     constructor(id, location, firing_rate, rate, range) {
       this.id = id;
       this.loc = location;
@@ -72,6 +72,10 @@ class Tower {
       }
     }
   
+    kill() {
+      this.shape.remove();
+    }
+
     addToLayer(layer) {
       var width = 50;
       var height = 56;
@@ -176,6 +180,7 @@ class Tower {
 }
 
 class BasicTower extends Tower {
+    static cost = 150;
     constructor(id, location) {
       super(id, location, 2.0, 100., 100.);
     }
