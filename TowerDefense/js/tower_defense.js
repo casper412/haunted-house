@@ -67,9 +67,10 @@ class Game {
   }
 
   nextLevel() {
-    this.stop();
+    this.doStop();
     this.level++;
     // Remove all the items
+    this.current_time = 0;
     this.balloonId = 0;
     this.balloons = {};
     this.bulletId = 0;
@@ -110,9 +111,10 @@ class Game {
     }.bind(this));
 
     this.collision.processCollisions(game);
-
+    console.log("Checking end");
     if(this.levels[this.level].isLevelOver(this.current_time)) {
-      if (Object.keys(this.balloons).length > 0) {
+      console.log("end");
+      if (Object.keys(this.balloons).length == 0) {
         this.nextLevel();
       }
     }
