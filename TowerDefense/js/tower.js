@@ -98,6 +98,16 @@ class Tower {
       this.shape.start();
       layer.add(this.shape);
       imageObj.src = this.image;
+
+      // Event handlers
+      var thisTower = this;
+      this.shape.on('click', function() {
+        thisTower.click();
+      });
+    }
+
+    click() {
+      game.upgrade_menu.setupMenu(this);
     }
 
     /**

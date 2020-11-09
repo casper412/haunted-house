@@ -9,11 +9,11 @@ var game;
 var player;
 var levelRender;
 var lastRender;
-var menu;
 
 // Layout Constants
 var fpsMovingAverage = 60;
 var textBarHeight = 50;
+var textBarWidth = 300;
 var menuWidth = 100;
 var playerStatHeight = 50;
 
@@ -30,7 +30,7 @@ class Game {
     this.bullets = {};
     this.path = new Path();
     this.running = false;
-    this.fixed_timestep = 0.05; // 200 ms
+    this.fixed_timestep = 0.025; // 40 ms
     this.current_time = 0.;
     this.collision = new Collision(width, height);
 
@@ -38,6 +38,8 @@ class Game {
     this.levels = [null, new LevelOne(), new LevelTwo()];
 
     // Mutable Game State
+    this.menu = undefined;
+    this.upgrade_menu = undefined;
     this.typeOfTowerToPlace = undefined;
   }
 
@@ -243,7 +245,7 @@ class Path {
 }
 
 function round(val) {
-  return Math.floor(val * 10 + 0.5) / 10
+  return Math.floor(val);
 }
 
 function draw() {
@@ -265,8 +267,8 @@ function loop() {
 
   draw()
   fpsMovingAverage = (1000 / progress) * 0.05 + fpsMovingAverage * 0.95;
-  renderTime.textContent = round(progress) 
-      + " FPS: " + round(fpsMovingAverage)
+  renderTime.textContent = 
+        " FPS: " + round(fpsMovingAverage)
       + " Game Speed: " + round(game.gameRate);
   
   lastRender = timestamp;
@@ -345,8 +347,10 @@ function init() {
   player = new Player(stage.width() - menuWidth, 0, menuWidth, playerStatHeight);
   levelRender = new LevelRender();
 
-  menu = new Menu(game, menuLayer, stage.width() - menuWidth, playerStatHeight, 
+  game.menu = new Menu(game, menuLayer, stage.width() - menuWidth, playerStatHeight, 
     menuWidth, stage.height() - playerStatHeight - textBarHeight);
+  game.upgrade_menu = new UpgradeMenu(game, menuLayer,
+      textBarWidth, stage.height() - textBarHeight, 400, textBarHeight);
 
   //start rendering
   lastRender = Date.now();

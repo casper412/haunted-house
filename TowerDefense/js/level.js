@@ -7,7 +7,7 @@ class Level {
   }
 
   addBalloon(current_time, timestep) {
-    var balloonRate = game.fixed_timestep * 3.;
+    var balloonRate = 1.;
     if (current_time > (this.lastBallonTime + balloonRate)
         && !this.isLevelOver(current_time)) {
       if (this.addBallonInternal()) {
