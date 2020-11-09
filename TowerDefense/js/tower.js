@@ -1,11 +1,13 @@
 class Tower {    
-    constructor(id, location, image, animations, firing_rate, bullet_speed, range) {
+    constructor(id, location, image, animations, 
+        firing_rate, bullet_speed, bullet_hit_points, range) {
       this.id = id;
       this.loc = location;
       this.image = image;
       this.animations = animations;
       this.firing_rate = firing_rate;
       this.bullet_speed = bullet_speed;
+      this.bullet_hit_points = bullet_hit_points;
       this.range = range;
       this.last_fire = 0;
       this.shape = null;
@@ -66,7 +68,7 @@ class Tower {
           var dir = this.getFiringDirection(balloons[i]);
           if (dir) {
             // Decide to fire
-            game.addBullet(this.loc.copy(), dir, this.bullet_speed, this.range);
+            game.addBullet(this.loc.copy(), dir, this.bullet_speed, this.bullet_hit_points, this.range);
             this.last_fire = current_time;
             break;
           }
@@ -164,43 +166,32 @@ class Tower {
     }
 }
 
-class BasicTower extends Tower {
-    static cost = 150;
-    constructor(id, location) {
-      super(id, location, 
-        './assets/generic-sprite.jpg',
-        { // Animations
-          idle: [
-                  0, 0, 50, 56,
-                 49, 0, 50, 56
-                ]
-        },
-        2.0, 100., 100.);
-    }
-}
-
 class FootSoldierTower extends Tower {
   static cost = 50;
+  static image = './assets/footman.png';
+  static animations = { // Animations
+    idle: [
+            0, 0, 75, 75,
+          ]
+  };
+  static bullet_hit_points = 1;
   constructor(id, location) {
-    super(id, location, './assets/footman.png',
-      { // Animations
-        idle: [
-                0, 0, 75, 75,
-              ]
-      },
-      2.0, 100., 100.);
+    super(id, location, FootSoldierTower.image, FootSoldierTower.animations,
+      2.0, 100., FootSoldierTower.bullet_hit_points, 100.);
   }
 }
 
 class SniperTower extends Tower {
   static cost = 75;
+  static image = './assets/sniper.png';
+  static animations = { // Animations
+    idle: [
+            0, 0, 75, 75,
+          ]
+  };
+  static bullet_hit_points = 3;
   constructor(id, location) {
-    super(id, location, './assets/sniper.png',
-      { // Animations
-        idle: [
-                0, 0, 75, 75,
-              ]
-      },
-      3.0, 320., 450.);
+    super(id, location, SniperTower.image, SniperTower.animations,
+      3.0, 620., SniperTower.bullet_hit_points, 450.);
   }
 }

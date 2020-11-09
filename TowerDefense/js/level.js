@@ -7,7 +7,7 @@ class Level {
   }
 
   addBalloon(current_time, timestep) {
-    var balloonRate = game.fixed_timestep;
+    var balloonRate = game.fixed_timestep * 3.;
     if (current_time > (this.lastBallonTime + balloonRate)
         && !this.isLevelOver(current_time)) {
       if (this.addBallonInternal()) {
@@ -33,8 +33,8 @@ class LevelRender {
 
   addToLayer(layer) {
     this.text = new Konva.Text({
-      x: stage.width() - menuWidth + 10,
-      y: 50,
+      x: stage.width() - menuWidth + 12,
+      y: 35,
       fontFamily: 'Calibri',
       fontSize: 12,
       text: '',

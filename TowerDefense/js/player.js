@@ -19,8 +19,8 @@ class Player {
       }
     }
 
-    earn(amount) {
-      this.money += amount;
+    earn(hits) {
+      this.money += hits * 10.;
     }
 
     getMoney() {
@@ -43,8 +43,8 @@ class Player {
       return this.health;
     }
 
-    advance(experience) {
-      this.experience += experience;
+    advance(hits) {
+      this.experience += hits * 20.;
     }
 
     getExperience() {

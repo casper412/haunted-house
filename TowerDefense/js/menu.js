@@ -47,19 +47,28 @@ class Button {
   }
 
   addToLayer(layer) {
-    this.shape = new Konva.Circle({
-      x: this.x,
-      y: this.y,
-      radius: 10,
-      fill: 'red',
-      stroke: 'black',
-      strokeWidth: 0.5
+    var widthOffset = this.width / 2.;
+    var heightOffset = this.height / 2.;
+    var imageObj = new Image();
+    this.shape = new Konva.Sprite({
+      x: this.x - widthOffset,
+      y: this.y - heightOffset,
+      scaleX: this.width / 50,
+      scaleY: this.height / 50,
+      image: imageObj,
+      animation: 'idle',
+      animations: this.towerType.animations,
+      frameRate: 2,
+      frameIndex: 0
     });
+    this.shape.start();
+    imageObj.src = this.towerType.image;
+    layer.add(this.shape);
+    // Event handlers
     var thisButton = this;
     this.shape.on('click', function() {
       thisButton.click();
     });
-    layer.add(this.shape);
   }
 
   click() {

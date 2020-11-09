@@ -1,5 +1,5 @@
 class Bullet {
-    constructor(id, location, direction, rate, range) {
+    constructor(id, location, direction, rate, bullet_hit_points, range) {
       this.id = id;
       this.loc = location;
       this.dir = direction;
@@ -8,7 +8,7 @@ class Bullet {
       this.range = range;
       this.shape = null;
       this.radius = 2;
-      this.hitPoints = 1;
+      this.hitPoints = bullet_hit_points;
       this.addToLayer(balloonLayer);
     }
   
@@ -40,8 +40,12 @@ class Bullet {
       layer.add(this.shape);
     }
 
-    kill() {
-      this.hitPoints -= 1;
+    kill(hits) {
+      if (hits) {
+        this.hitPoints -= hits;
+      } else {
+        this.hitPoints = 0;
+      }
       if (this.hitPoints <= 0) {
         this.shape.remove();
         game.removeBullet(this.id);

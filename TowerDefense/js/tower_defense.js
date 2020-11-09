@@ -30,25 +30,24 @@ class Game {
     this.bullets = {};
     this.path = new Path();
     this.running = false;
-    this.fixed_timestep = 0.1; // 200 ms
+    this.fixed_timestep = 0.05; // 200 ms
     this.current_time = 0.;
     this.collision = new Collision(width, height);
 
     this.level = 1;
     this.levels = [null, new LevelOne(), new LevelTwo()];
 
-
     // Mutable Game State
-    this.typeOfTowerToPlace = BasicTower;
+    this.typeOfTowerToPlace = undefined;
   }
 
   isOffBoard(x, y) {
     return this.collision.isOffBoard(x, y);
   }
   
-  addBullet(location, direction, rate, range) {
+  addBullet(location, direction, rate, bullet_hit_points, range) {
     var id = this.bulletId++;
-    this.bullets[id] = new Bullet(id, location, direction, rate, range);
+    this.bullets[id] = new Bullet(id, location, direction, rate, bullet_hit_points, range);
   }
 
   addTower(point) {
@@ -123,10 +122,9 @@ class Game {
     }.bind(this));
 
     this.collision.processCollisions(game);
-    console.log("Checking end");
     if(this.levels[this.level].isLevelOver(this.current_time)) {
-      console.log("end");
-      if (Object.keys(this.balloons).length == 0) {
+      if (Object.keys(this.balloons).length == 0
+          && Object.keys(this.bullets).length == 0) {
         this.nextLevel();
       }
     }

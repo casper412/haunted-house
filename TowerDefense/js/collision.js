@@ -109,8 +109,9 @@ class Collision {
                   var delta = bullet.loc.minus(balloon.loc);
                   var dist = delta.getLength();
                   if (dist < balloon.radius + bullet.radius) {
-                    balloon.shot();
-                    bullet.kill();
+                    // A bullet may intersect two ballons at once
+                    var hits = balloon.shot(bullet.hitPoints);
+                    bullet.kill(hits);
                   }
                 });
               }//end hit points

@@ -39,10 +39,11 @@ class Balloon {
       layer.add(this.shape);
     }
   
-    shot() {
-      player.earn(10);
-      player.advance(20);
-      this.kill();
+    shot(possibleHits) {
+      var hits = this.kill(possibleHits);
+      player.earn(hits);
+      player.advance(hits);
+      return hits;
     }
 
     die() {
@@ -52,8 +53,9 @@ class Balloon {
       }
     }
 
-    kill() {
-      this.hitPoints -= 1;
+    kill(possibleHits) {
+      var hits = Math.min(possibleHits, this.hitPoints);
+      this.hitPoints -= hits;
       if (this.hitPoints <= 0) {
         this.shape.remove();
         game.removeBalloon(this.id);
@@ -62,6 +64,7 @@ class Balloon {
         this.rate = this.getRate(this.hitPoints);
         this.shape.fill(this.color);
       }
+      return hits;
     }
 
     getColor(hitPoints) {
