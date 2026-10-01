@@ -1,0 +1,46 @@
+name: Deploy Family Fleet to GitHub Pages
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'family-fleet/**'
+      - '.github/workflows/deploy-family-fleet.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: family-fleet-pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - name: Install dependencies
+        working-directory: family-fleet
+        run: flutter pub get
+      - name: Build web app
+        working-directory: family-fleet
+        run: flutter build web --release --base-href /haunted-house/ --dart-define=GOOGLE_WEB_CLIENT_ID=882958862555-sc1eg3f1u199mfpv54t1rqngaicsbm3q.apps.googleusercontent.com
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: family-fleet/build/web
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
