@@ -1,0 +1,4 @@
+GOOGLE_IOS_CLIENT_ID =
+GOOGLE_REVERSED_CLIENT_ID =
+#include "Generated.xcconfig"
+#include? "GoogleSignIn.xcconfig"
