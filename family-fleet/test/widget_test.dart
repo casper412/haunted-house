@@ -29,6 +29,13 @@ void main() {
     );
     expect(
       find.descendant(
+        of: find.byKey(const ValueKey('car-penny')),
+        matching: find.text('Matt'),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
         of: find.byKey(const ValueKey('car-taos')),
         matching: find.text('Unassigned'),
       ),

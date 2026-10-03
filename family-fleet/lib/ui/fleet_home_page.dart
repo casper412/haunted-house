@@ -323,7 +323,14 @@ class _FleetHomePageState extends State<FleetHomePage> {
     List<FamilyMember> members,
   ) {
     final assignment = _currentFor(car, assignments);
-    if (assignment == null) return null;
+    if (assignment == null) {
+      final defaultMemberId = defaultMemberByCar[car.id];
+      if (defaultMemberId == null) return null;
+      for (final member in members) {
+        if (member.id == defaultMemberId) return member;
+      }
+      return null;
+    }
     for (final member in members) {
       if (member.id == assignment.memberId) return member;
     }
