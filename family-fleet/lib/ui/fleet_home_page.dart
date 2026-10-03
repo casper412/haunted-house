@@ -82,8 +82,17 @@ class _FleetHomePageState extends State<FleetHomePage> {
       return;
     }
 
-    await widget.repository.saveAssignment(assignment);
-    if (mounted) setState(_reload);
+    try {
+      await widget.repository.saveAssignment(assignment);
+      if (mounted) setState(_reload);
+    } catch (error) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(
+          SnackBar(content: Text('Could not save assignment: $error')),
+        );
+    }
   }
 
   Future<void> _delete(Assignment assignment) async {
@@ -530,11 +539,16 @@ class _AssignmentSheet extends StatefulWidget {
 class _AssignmentSheetState extends State<_AssignmentSheet> {
   final _titleController = TextEditingController();
   bool _showTitleError = false;
+  bool _didSubmit = false;
   late String _carId = widget.editing?.carId ?? widget.data.cars.first.id;
-  late String _memberId =
-      widget.data.members.any((member) => member.id == widget.editing?.memberId)
-      ? widget.editing!.memberId
-      : widget.data.members.first.id;
+  late String _memberId = widget.editing != null
+      ? (widget.data.members.any(
+              (member) => member.id == widget.editing!.memberId,
+            )
+            ? widget.editing!.memberId
+            : unassignedDriverId)
+      : defaultMemberByCar[_carId] ?? unassignedDriverId;
+  late bool _memberManuallySelected = widget.editing != null;
   late DateTime _start = widget.editing?.start ?? _currentMinute();
   late DateTime? _recurrenceEnd = widget.editing?.recurrenceEnd;
   late bool _isAllDay = widget.editing?.allDay ?? false;
@@ -599,6 +613,7 @@ class _AssignmentSheetState extends State<_AssignmentSheet> {
   }
 
   void _save() {
+    if (_didSubmit) return;
     final title = _titleController.text.trim();
     if (title.isEmpty) {
       setState(() => _showTitleError = true);
@@ -610,6 +625,7 @@ class _AssignmentSheetState extends State<_AssignmentSheet> {
     final end = _isAllDay
         ? DateTime(start.year, start.month, start.day + 1)
         : start.add(Duration(hours: _durationHours));
+    _didSubmit = true;
     Navigator.pop(
       context,
       Assignment(
@@ -690,10 +706,17 @@ class _AssignmentSheetState extends State<_AssignmentSheet> {
               border: OutlineInputBorder(),
             ),
             items: [
+              const DropdownMenuItem(
+                value: unassignedDriverId,
+                child: Text('Unassigned'),
+              ),
               for (final member in widget.data.members)
                 DropdownMenuItem(value: member.id, child: Text(member.name)),
             ],
-            onChanged: (value) => setState(() => _memberId = value!),
+            onChanged: (value) => setState(() {
+              _memberId = value!;
+              _memberManuallySelected = true;
+            }),
           ),
           const SizedBox(height: 12),
           DropdownButtonFormField<String>(
@@ -706,7 +729,12 @@ class _AssignmentSheetState extends State<_AssignmentSheet> {
               for (final car in widget.data.cars)
                 DropdownMenuItem(value: car.id, child: Text(car.name)),
             ],
-            onChanged: (value) => setState(() => _carId = value!),
+            onChanged: (value) => setState(() {
+              _carId = value!;
+              if (!_memberManuallySelected) {
+                _memberId = defaultMemberByCar[_carId] ?? unassignedDriverId;
+              }
+            }),
           ),
           const SizedBox(height: 12),
           SwitchListTile(
@@ -829,7 +857,7 @@ class _AssignmentSheetState extends State<_AssignmentSheet> {
           SizedBox(
             width: double.infinity,
             child: FilledButton(
-              onPressed: _save,
+              onPressed: _didSubmit ? null : _save,
               child: Text(
                 widget.editing == null ? 'Save assignment' : 'Save changes',
               ),

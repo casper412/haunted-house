@@ -187,9 +187,10 @@ class GoogleCalendarRepository implements CalendarRepository {
       (member) => member.id == assignment.memberId,
     );
     final driverName = driver.isEmpty ? 'Unassigned' : driver.first.name;
-    final eventId =
+    final existingEventId =
         assignment.externalEventId ??
         _eventIdFromAssignmentId(assignment.id, calendarId);
+    final eventId = existingEventId ?? familyFleetGoogleEventId(assignment);
     final privateProperties = <String, String>{
       'familyFleet': 'true',
       'familyFleetCarId': assignment.carId,
@@ -207,6 +208,7 @@ class GoogleCalendarRepository implements CalendarRepository {
       assignment.end.day,
     );
     final event = gcal.Event(
+      id: eventId,
       summary: assignment.title,
       start: assignment.allDay
           ? gcal.EventDateTime(date: startDate)
@@ -228,12 +230,21 @@ class GoogleCalendarRepository implements CalendarRepository {
       extendedProperties: gcal.EventExtendedProperties(
         private: privateProperties,
       ),
-      description: eventId == null ? 'Driver: $driverName' : null,
+      description: assignment.externalEventId == null
+          ? 'Driver: $driverName'
+          : null,
     );
-    if (eventId == null) {
-      await api.events.insert(event, calendarId);
+    if (existingEventId != null) {
+      await api.events.patch(event, calendarId, existingEventId);
     } else {
-      await api.events.patch(event, calendarId, eventId);
+      try {
+        await api.events.insert(event, calendarId);
+      } on gcal.DetailedApiRequestError catch (error) {
+        if (error.status != 409) rethrow;
+        // A repeated save uses the same content-derived ID. If its first
+        // request reached Google but the response was lost, update that event.
+        await api.events.patch(event, calendarId, eventId);
+      }
     }
   }
 
@@ -258,6 +269,62 @@ String? _eventIdFromAssignmentId(String assignmentId, String calendarId) {
   if (!assignmentId.startsWith(prefix)) return null;
   final eventId = assignmentId.substring(prefix.length);
   return eventId.isEmpty ? null : eventId;
+}
+
+String familyFleetGoogleEventId(Assignment assignment) {
+  final key = [
+    assignment.carId,
+    assignment.memberId,
+    assignment.title,
+    assignment.start.toIso8601String(),
+    assignment.end.toIso8601String(),
+    assignment.allDay,
+    assignment.recurrence.name,
+    (assignment.weekdays.toList()..sort()).join(','),
+    assignment.recurrenceEnd?.toIso8601String() ?? '',
+  ].join('\u001f');
+  final mask = (BigInt.one << 64) - BigInt.one;
+  final prime = BigInt.parse('1099511628211');
+  var hash = BigInt.parse('14695981039346656037');
+  for (final codeUnit in key.codeUnits) {
+    hash = ((hash ^ BigInt.from(codeUnit)) * prime) & mask;
+  }
+  // Google Calendar event IDs allow lowercase base32hex characters.
+  return 'ff${hash.toRadixString(32)}';
+}
+
+Map<String, String> suggestCalendarMappings({
+  required List<FleetCar> cars,
+  required List<gcal.CalendarListEntry> calendars,
+  required Map<String, String> current,
+}) {
+  final byId = {
+    for (final calendar in calendars)
+      if (calendar.id != null) calendar.id!: calendar,
+  };
+  final result = <String, String>{};
+  final usedIds = <String>{};
+  for (final car in cars) {
+    final id = current[car.id];
+    if (id != null && byId.containsKey(id) && usedIds.add(id)) {
+      result[car.id] = id;
+    }
+  }
+  for (final car in cars) {
+    if (result.containsKey(car.id)) continue;
+    final wanted = car.name.trim().toLowerCase();
+    for (final calendar in calendars) {
+      final id = calendar.id;
+      if (id != null &&
+          !usedIds.contains(id) &&
+          calendar.summary?.trim().toLowerCase() == wanted) {
+        result[car.id] = id;
+        usedIds.add(id);
+        break;
+      }
+    }
+  }
+  return result;
 }
 
 class GoogleCalendarMappingStore {

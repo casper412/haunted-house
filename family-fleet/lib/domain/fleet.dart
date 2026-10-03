@@ -36,7 +36,10 @@ const fleetVehicles = <FleetCar>[
 const unassignedDriverId = 'unassigned';
 
 /// Default driver for cars without an active scheduled assignment.
-const defaultMemberByCar = <String, String>{'ravalicious': 'rachel'};
+const defaultMemberByCar = <String, String>{
+  'penny': 'matt',
+  'ravalicious': 'rachel',
+};
 
 class Assignment {
   const Assignment({

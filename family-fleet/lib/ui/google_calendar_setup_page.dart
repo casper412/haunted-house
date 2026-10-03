@@ -69,6 +69,11 @@ class _GoogleCalendarSetupPageState extends State<GoogleCalendarSetupPage> {
         if (account != null && !kIsWeb) {
           _accountEmail = account.email;
           _calendars = await widget.connection.listWritableCalendars();
+          _selected = suggestCalendarMappings(
+            cars: fleetVehicles,
+            calendars: _calendars,
+            current: _selected,
+          );
         }
       } catch (error) {
         _error = _friendlyError(error);
@@ -92,6 +97,11 @@ class _GoogleCalendarSetupPageState extends State<GoogleCalendarSetupPage> {
       setState(() {
         _accountEmail = account.email;
         _calendars = calendars;
+        _selected = suggestCalendarMappings(
+          cars: fleetVehicles,
+          calendars: calendars,
+          current: _selected,
+        );
       });
     } catch (error) {
       if (mounted) setState(() => _error = _friendlyError(error));
@@ -142,8 +152,15 @@ class _GoogleCalendarSetupPageState extends State<GoogleCalendarSetupPage> {
     return message.replaceFirst('Exception: ', '');
   }
 
-  bool get _allMapped =>
-      fleetVehicles.every((car) => (_selected[car.id] ?? '').isNotEmpty);
+  bool get _allMapped {
+    final selectedIds = fleetVehicles
+        .map((car) => _selected[car.id])
+        .toList(growable: false);
+    return selectedIds.every(
+          (id) => id != null && _calendars.any((calendar) => calendar.id == id),
+        ) &&
+        selectedIds.toSet().length == selectedIds.length;
+  }
 
   @override
   Widget build(BuildContext context) {
